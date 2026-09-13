@@ -1,0 +1,25 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Build output
+bin/
+obj/
+
+# Visual Studio Code
+.vscode/
+
+# Logs
+*.log
+
+# Test results
+TestResults/
+
+# Local database files
+*.mdf
+*.ldf
+
+# Operating system files
+.DS_Store
+Thumbs.db
