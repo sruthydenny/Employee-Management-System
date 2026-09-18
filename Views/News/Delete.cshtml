@@ -1,0 +1,91 @@
+﻿@model EmployeeManagementSystem.Models.News
+
+@{
+    ViewData["Title"] = "Delete News";
+}
+
+<div class="employees-page">
+
+    <div class="employees-header">
+
+        <div>
+            <span class="eyebrow">COMPANY COMMUNICATIONS</span>
+
+            <h1>Delete News</h1>
+
+            <p>
+                Confirm that you want to remove this announcement.
+            </p>
+        </div>
+
+        <a asp-action="Index"
+           class="clear-button">
+            Back to News
+        </a>
+
+    </div>
+
+
+    <div class="employee-panel">
+
+        <div class="employee-panel-header">
+
+            <div>
+                <span class="panel-eyebrow">DELETE ANNOUNCEMENT</span>
+
+                <h2>Confirm Deletion</h2>
+            </div>
+
+        </div>
+
+
+        <div class="employee-form-container">
+
+            <div class="delete-warning">
+
+                <h3>
+                    @Model.Title
+                </h3>
+
+                <p>
+                    @Model.Content
+                </p>
+
+                <p>
+                    <strong>
+                        Published:
+                    </strong>
+
+                    @Model.PublishedDate.ToString("dd MMM yyyy")
+                </p>
+
+            </div>
+
+
+            <form asp-action="Delete"
+                  method="post">
+
+                <input type="hidden"
+                       asp-for="Id" />
+                      
+                <div class="form-actions">
+
+                    <button type="submit"
+                            class="confirm-delete-button">
+                        Delete News
+                    </button>
+
+                    <a asp-action="Index"
+                       class="clear-button">
+                        Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,226 @@
+﻿@model EmployeeManagementSystem.Models.EmployeeTask
+
+@{
+    ViewData["Title"] = "Edit Task";
+}
+
+<div class="employees-page">
+
+    <!-- PAGE HEADER -->
+
+    <div class="employees-header">
+
+        <div>
+
+            <span class="eyebrow">
+                WORKFORCE OPERATIONS
+            </span>
+
+            <h1>
+                Edit Task
+            </h1>
+
+            <p>
+                Update the task details and employee assignment.
+            </p>
+
+        </div>
+
+
+        <a asp-action="Index"
+           class="clear-button">
+
+            Back to Tasks
+
+        </a>
+
+    </div>
+
+
+    <!-- FORM PANEL -->
+
+    <div class="employee-panel">
+
+        <!-- PANEL HEADER -->
+
+        <div class="employee-panel-header">
+
+            <div>
+
+                <span class="panel-eyebrow">
+                    EDIT TASK
+                </span>
+
+                <h2>
+                    Task Information
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <!-- FORM -->
+
+        <div class="employee-form-container task-edit-form-container">
+
+            <form asp-action="Edit"
+                  method="post"
+                  class="task-edit-form">
+
+                @Html.AntiForgeryToken()
+
+                <input type="hidden"
+                       asp-for="Id" />
+
+
+                <!-- VALIDATION -->
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3">
+                </div>
+
+
+                <!-- TASK TITLE -->
+
+                <div class="form-group">
+
+                    <label asp-for="Title">
+                        Task Title
+                    </label>
+
+                    <input asp-for="Title"
+                           class="form-control"
+                           placeholder="Enter task title..." />
+
+                    <span asp-validation-for="Title"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <!-- DESCRIPTION -->
+
+                <div class="form-group">
+
+                    <label asp-for="Description">
+                        Description
+                    </label>
+
+                    <textarea asp-for="Description"
+                              class="form-control"
+                              rows="6"
+                              placeholder="Describe the task..."></textarea>
+
+                    <span asp-validation-for="Description"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <!-- EMPLOYEE -->
+
+                <div class="form-group">
+
+                    <label asp-for="EmployeeId">
+                        Assign Employee
+                    </label>
+
+                    <select asp-for="EmployeeId"
+                            class="form-control">
+
+                        <option value="">
+                            Select an employee...
+                        </option>
+
+                        @foreach (var employee in
+                            (List<EmployeeManagementSystem.Models.Employee>)ViewBag.Employees)
+                        {
+                            <option value="@employee.Id">
+                                @employee.FullName
+                            </option>
+                        }
+
+                    </select>
+
+                    <span asp-validation-for="EmployeeId"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <!-- DUE DATE -->
+
+                <div class="form-group">
+
+                    <label asp-for="DueDate">
+                        Due Date
+                    </label>
+
+                    <input asp-for="DueDate"
+                           type="date"
+                           class="form-control" />
+
+                    <span asp-validation-for="DueDate"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <!-- CURRENT STATUS -->
+
+                <div class="form-group">
+
+                    <label>
+                        Current Status
+                    </label>
+
+                    <input value="@Model.Status"
+                           class="form-control"
+                           readonly />
+
+                </div>
+
+
+                <!-- ACTIONS -->
+
+                <div class="form-actions">
+
+                    <button type="submit"
+                            class="employee-add-button">
+
+                        Save Changes
+
+                    </button>
+
+
+                    <a asp-action="Index"
+                       class="clear-button">
+
+                        Cancel
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync(
+            "_ValidationScriptsPartial");
+    }
+
+}

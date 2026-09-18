@@ -1,0 +1,160 @@
+﻿@model EmployeeManagementSystem.Models.EmployeePerformance
+
+@{
+    ViewData["Title"] = "Delete Performance";
+}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold">Delete Performance</h2>
+
+            <p class="text-muted mb-0">
+                Review the performance record before permanently deleting it.
+            </p>
+        </div>
+
+        <a asp-action="Index"
+           class="btn btn-outline-secondary">
+            ← Back to Performance
+        </a>
+
+    </div>
+
+
+    <div class="card shadow-sm border-danger">
+
+        <div class="card-body">
+
+            <div class="alert alert-warning">
+                <strong>Warning:</strong>
+                This action cannot be undone.
+            </div>
+
+
+            <dl class="row">
+
+                <!-- Employee -->
+
+                <dt class="col-sm-3">
+                    Employee
+                </dt>
+
+                <dd class="col-sm-9">
+
+                    @if (Model.Employee != null)
+                    {
+                        <strong>
+                            @Model.Employee.FullName
+                        </strong>
+
+                        <div class="small text-muted">
+                            @Model.Employee.Department
+                        </div>
+                    }
+                    else
+                    {
+                        <span class="text-muted">
+                            Employee not found
+                        </span>
+                    }
+
+                </dd>
+
+
+                <!-- Month -->
+
+                <dt class="col-sm-3">
+                    Month
+                </dt>
+
+                <dd class="col-sm-9">
+                    @Model.Month
+                </dd>
+
+
+                <!-- Score -->
+
+                <dt class="col-sm-3">
+                    Performance Score
+                </dt>
+
+                <dd class="col-sm-9">
+
+                    @if (Model.Score >= 80)
+                    {
+                        <span class="badge bg-success">
+                            @Model.Score.ToString("0.##")%
+                        </span>
+                    }
+                    else if (Model.Score >= 60)
+                    {
+                        <span class="badge bg-warning text-dark">
+                            @Model.Score.ToString("0.##")%
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">
+                            @Model.Score.ToString("0.##")%
+                        </span>
+                    }
+
+                </dd>
+
+
+                <!-- Comments -->
+
+                <dt class="col-sm-3">
+                    Comments
+                </dt>
+
+                <dd class="col-sm-9">
+
+                    @if (!string.IsNullOrWhiteSpace(Model.Comments))
+                    {
+                        @Model.Comments
+                    }
+                    else
+                    {
+                        <span class="text-muted">
+                            No comments
+                        </span>
+                    }
+
+                </dd>
+
+            </dl>
+
+
+            <!-- Delete Form -->
+
+            <form asp-action="Delete"
+                  method="post">
+
+                <input type="hidden"
+                       asp-for="Id" />
+
+                <div class="d-flex gap-2 mt-4">
+
+                    <button type="submit"
+                            class="btn btn-danger">
+                        Delete Performance
+                    </button>
+
+                    <a asp-action="Index"
+                       class="btn btn-outline-secondary">
+                        Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

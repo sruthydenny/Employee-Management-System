@@ -4,141 +4,292 @@
     ViewData["Title"] = "Employees";
 }
 
-<div class="container mt-5">
+<div class="employees-page">
 
-    <div class="card shadow-lg border-0">
+    <!-- Page Header -->
+    <div class="employees-header">
 
-        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+        <div>
+            <span class="eyebrow">EMPLOYEE OPERATIONS</span>
 
-            <h3 class="mb-0">👨‍💼 Employee Management</h3>
+            <h1>Employee</h1>
 
-            <a asp-action="Create" class="btn btn-success">
-                + Add Employee
+            <p>
+                Manage employee records, departments and workforce information.
+            </p>
+        </div>
+
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-action="Create" class="employee-add-button">
+                Add Employee
             </a>
-
-        </div>
-
-        <div class="card-body">
-            <form asp-action="Index" method="get" class="mb-4">
-
-    <div class="row">
-
-        <div class="col-md-4">
-            <input type="text"
-                   name="searchString"
-                   value="@ViewData["CurrentFilter"]"
-                   class="form-control"
-                   placeholder="🔍 Search employee..." />
-        </div>
-
-        <div class="col-md-3">
-            <select name="department" class="form-select">
-
-                <option value="">All Departments</option>
-
-                @foreach (var dept in ViewBag.Departments)
-                {
-                    if (dept == (string?)ViewData["CurrentDepartment"])
-                    {
-                        <option value="@dept" selected>@dept</option>
-                    }
-                    else
-                    {
-                        <option value="@dept">@dept</option>
-                    }
-                }
-
-            </select>
-        </div>
-
-        <div class="col-md-2">
-            <button type="submit" class="btn btn-primary w-100">
-                Search
-            </button>
-        </div>
-
-        <div class="col-md-2">
-            <a asp-action="Index" class="btn btn-secondary w-100">
-                Clear
-            </a>
-        </div>
+        }
 
     </div>
 
-</form>
 
-            <div class="table-responsive">
+    <!-- Employee Management Panel -->
+    <div class="employee-panel">
 
-                <table class="table table-hover align-middle">
+        <!-- Panel Header -->
+        <div class="employee-panel-header">
 
-                    <thead class="table-dark">
+            <div>
+                <span class="panel-eyebrow">WORKFORCE DIRECTORY</span>
 
-                        <tr>
+                <h2>Employee Records</h2>
+            </div>
 
-                            <th>Full Name</th>
-                            <th>Email</th>
-                            <th>Department</th>
-                            <th>Position</th>
-                            <th>Salary</th>
-                            <th>Hire Date</th>
-                            <th class="text-center">Actions</th>
+            <div class="employee-count">
+                @Model.Count() employees
+            </div>
 
-                        </tr>
+        </div>
 
-                    </thead>
 
-                    <tbody>
+        <!-- Search & Filters -->
+        @if (User.IsInRole("Admin"))
+        {
+            <div class="employee-filters">
 
-@foreach (var item in Model)
-{
-                        <tr>
+                <form asp-action="Index"
+                      method="get"
+                      class="filter-form">
 
-                            <td>@item.FullName</td>
+                    <div class="search-wrapper">
 
-                            <td>@item.Email</td>
+                        <span class="search-icon">⌕</span>
 
-                            <td>
-                                <span class="badge bg-primary">
-                                    @item.Department
-                                </span>
-                            </td>
+                        <input type="text"
+                               name="searchString"
+                               value="@ViewData["CurrentFilter"]"
+                               class="employee-search"
+                               placeholder="Search by employee name or email..." />
 
-                            <td>@item.Position</td>
+                    </div>
 
-                            <td>@item.Salary.ToString("C")</td>
 
-                            <td>@item.HireDate.ToString("dd MMM yyyy")</td>
+                    <div class="department-wrapper">
 
-                            <td class="text-center">
+                        <select name="department"
+                                class="employee-select">
 
-                                <a asp-action="Edit"
-                                   asp-route-id="@item.Id"
-                                   class="btn btn-warning btn-sm">
-                                    Edit
-                                </a>
+                            <option value="">All Departments</option>
 
-                                <a asp-action="Details"
-                                   asp-route-id="@item.Id"
-                                   class="btn btn-info btn-sm text-white">
-                                    Details
-                                </a>
+                            @foreach (var dept in ViewBag.Departments)
+                            {
+                                if (dept == (string?)ViewData["CurrentDepartment"])
+                                {
+                                    <option value="@dept" selected>
+                                        @dept
+                                    </option>
+                                }
+                                else
+                                {
+                                    <option value="@dept">
+                                        @dept
+                                    </option>
+                                }
+                            }
 
-                                <a asp-action="Delete"
-                                   asp-route-id="@item.Id"
-                                   class="btn btn-danger btn-sm">
-                                    Delete
-                                </a>
+                        </select>
 
-                            </td>
+                    </div>
 
-                        </tr>
-}
 
-                    </tbody>
+                    <button type="submit"
+                            class="filter-button">
+                        Search
+                    </button>
 
-                </table>
+
+                    <a asp-action="Index"
+                       class="clear-button">
+                        Clear
+                    </a>
+
+                </form>
 
             </div>
+        }
+
+
+        <!-- Employee Table -->
+        <div class="employee-table-wrapper">
+
+            <table class="employee-table">
+
+                <thead>
+
+                    <tr>
+                        <th>Employee</th>
+                        <th>Department</th>
+                        <th>Position</th>
+                        <th>Salary</th>
+                        <th>Hire Date</th>
+                        <th class="actions-column">Actions</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @if (Model.Any())
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <!-- Employee -->
+                                <td>
+
+                                    <div class="employee-info">
+
+                                        <div class="employee-avatar">
+                                            @(string.IsNullOrEmpty(item.FullName)
+                                                ? "?"
+                                                : item.FullName.Substring(0, 1).ToUpper())
+                                        </div>
+
+                                        <div>
+                                            <strong>
+                                                @item.FullName
+                                            </strong>
+
+                                            <span>
+                                                @item.Email
+                                            </span>
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+
+                                <!-- Department -->
+                                <td>
+
+                                    <span class="department-badge">
+                                        @item.Department
+                                    </span>
+
+                                </td>
+
+
+                                <!-- Position -->
+                                <td>
+
+                                    <span class="position-text">
+                                        @item.Position
+                                    </span>
+
+                                </td>
+
+
+                                <!-- Salary -->
+                                <td>
+
+                                    <span class="salary-text">
+                                        €@item.Salary.ToString("N2")
+                                    </span>
+
+                                </td>
+
+
+                                <!-- Hire Date -->
+                                <td>
+
+                                    <span class="hire-date">
+                                        @item.HireDate.ToString("dd MMM yyyy")
+                                    </span>
+
+                                </td>
+
+
+                                <!-- Actions -->
+                                <td class="actions-column">
+
+                                    <div class="employee-actions">
+
+                                        <!-- Everyone can view their permitted employee -->
+                                        <a asp-action="Details"
+                                           asp-route-id="@item.Id"
+                                           class="table-action view-action"
+                                           title="View employee">
+                                            View
+                                        </a>
+
+
+                                        <!-- Admin only -->
+                                        @if (User.IsInRole("Admin"))
+                                        {
+                                            <a asp-action="Edit"
+                                               asp-route-id="@item.Id"
+                                               class="table-action edit-action"
+                                               title="Edit employee">
+                                                Edit
+                                            </a>
+
+                                            <a asp-action="Delete"
+                                               asp-route-id="@item.Id"
+                                               class="table-action delete-action"
+                                               title="Delete employee">
+                                                Delete
+                                            </a>
+                                        }
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+
+                            <td colspan="6">
+
+                                <div class="empty-state">
+
+                                    <div class="empty-icon">
+                                        👥
+                                    </div>
+
+                                    <h3>No employees found</h3>
+
+
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <p>
+                                            Try changing your search or department filter.
+                                        </p>
+
+                                        <a asp-action="Create"
+                                           class="employee-add-button">
+                                            <span>+</span>
+                                            Add Employee
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <p>
+                                            No employee profile is currently assigned to your account.
+                                        </p>
+                                    }
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
 
         </div>
 

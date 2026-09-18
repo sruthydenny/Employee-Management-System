@@ -1,0 +1,156 @@
+﻿@model EmployeeManagementSystem.Models.Attendance
+
+@{
+    ViewData["Title"] = "Delete Attendance";
+}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold">Delete Attendance</h2>
+
+            <p class="text-muted mb-0">
+                Review the attendance record before permanently deleting it.
+            </p>
+        </div>
+
+        <a asp-action="Index"
+           class="btn btn-outline-secondary">
+            ← Back to Attendance
+        </a>
+
+    </div>
+
+
+    <div class="card shadow-sm border-danger">
+
+        <div class="card-body">
+
+            <div class="alert alert-warning">
+                <strong>Warning:</strong>
+                This action cannot be undone.
+            </div>
+
+
+            <dl class="row">
+
+                <!-- Employee -->
+
+                <dt class="col-sm-3">
+                    Employee
+                </dt>
+
+                <dd class="col-sm-9">
+
+                    @if (Model.Employee != null)
+                    {
+                        <strong>
+                            @Model.Employee.FullName
+                        </strong>
+
+                        <div class="small text-muted">
+                            @Model.Employee.Department
+                        </div>
+                    }
+                    else
+                    {
+                        <span class="text-muted">
+                            Employee not found
+                        </span>
+                    }
+
+                </dd>
+
+
+                <!-- Date -->
+
+                <dt class="col-sm-3">
+                    Date
+                </dt>
+
+                <dd class="col-sm-9">
+                    @Model.Date.ToString("dd MMM yyyy")
+                </dd>
+
+
+                <!-- Attendance -->
+
+                <dt class="col-sm-3">
+                    Attendance
+                </dt>
+
+                <dd class="col-sm-9">
+
+                    @if (Model.IsPresent)
+                    {
+                        <span class="badge bg-success">
+                            Present
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">
+                            Absent
+                        </span>
+                    }
+
+                </dd>
+
+
+                <!-- Late -->
+
+                <dt class="col-sm-3">
+                    Late Status
+                </dt>
+
+                <dd class="col-sm-9">
+
+                    @if (Model.IsLate)
+                    {
+                        <span class="badge bg-warning text-dark">
+                            Late
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">
+                            On Time
+                        </span>
+                    }
+
+                </dd>
+
+            </dl>
+
+
+            <!-- Delete Form -->
+
+            <form asp-action="Delete"
+                  method="post">
+
+                <input type="hidden"
+                       asp-for="Id" />
+
+                <div class="d-flex gap-2 mt-4">
+
+                    <button type="submit"
+                            class="btn btn-danger">
+                        Delete Attendance
+                    </button>
+
+                    <a asp-action="Index"
+                       class="btn btn-outline-secondary">
+                        Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

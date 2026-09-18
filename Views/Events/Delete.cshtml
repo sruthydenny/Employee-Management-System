@@ -1,0 +1,99 @@
+﻿@model EmployeeManagementSystem.Models.CompanyEvent
+
+@{
+    ViewData["Title"] = "Delete Company Event";
+}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold">Delete Company Event</h2>
+            <p class="text-muted mb-0">
+                Review the event before permanently deleting it.
+            </p>
+        </div>
+
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            ← Back to Events
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-danger">
+        <div class="card-body">
+
+            <div class="alert alert-warning">
+                <strong>Warning:</strong>
+                This action cannot be undone.
+            </div>
+
+            <dl class="row">
+
+                <dt class="col-sm-3">
+                    Event Title
+                </dt>
+                <dd class="col-sm-9">
+                    @Model.Title
+                </dd>
+
+                <dt class="col-sm-3">
+                    Description
+                </dt>
+                <dd class="col-sm-9">
+                    @if (!string.IsNullOrWhiteSpace(Model.Description))
+                    {
+                        @Model.Description
+                    }
+                    else
+                    {
+                        <span class="text-muted">No description</span>
+                    }
+                </dd>
+
+                <dt class="col-sm-3">
+                    Event Date
+                </dt>
+                <dd class="col-sm-9">
+                    @Model.EventDate.ToString("dd MMM yyyy, HH:mm")
+                </dd>
+
+                <dt class="col-sm-3">
+                    Location
+                </dt>
+                <dd class="col-sm-9">
+                    @if (!string.IsNullOrWhiteSpace(Model.Location))
+                    {
+                        @Model.Location
+                    }
+                    else
+                    {
+                        <span class="text-muted">Not specified</span>
+                    }
+                </dd>
+
+            </dl>
+
+            <form asp-action="Delete" method="post">
+
+                <input type="hidden" asp-for="Id" />
+
+                <div class="d-flex gap-2 mt-4">
+
+                    <button type="submit"
+                            class="btn btn-danger">
+                        Delete Event
+                    </button>
+
+                    <a asp-action="Index"
+                       class="btn btn-outline-secondary">
+                        Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>

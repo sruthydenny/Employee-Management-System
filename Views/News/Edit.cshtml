@@ -1,0 +1,174 @@
+﻿@model EmployeeManagementSystem.Models.News
+
+@{
+    ViewData["Title"] = "Edit News";
+}
+
+<div class="employees-page">
+
+    <!-- Page Header -->
+
+    <div class="employees-header">
+
+        <div>
+
+            <span class="eyebrow">
+                COMPANY COMMUNICATIONS
+            </span>
+
+            <h1>
+                Edit News
+            </h1>
+
+            <p>
+                Update this company announcement.
+            </p>
+
+        </div>
+
+
+        <a asp-action="Index"
+           class="clear-button">
+
+            Back to News
+
+        </a>
+
+    </div>
+
+
+    <!-- News Panel -->
+
+    <div class="employee-panel">
+
+        <!-- Panel Header -->
+
+        <div class="employee-panel-header">
+
+            <div>
+
+                <span class="panel-eyebrow">
+                    EDIT ANNOUNCEMENT
+                </span>
+
+                <h2>
+                    News Information
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <!-- Form -->
+
+        <div class="employee-form-container news-edit-form-container">
+
+            <form asp-action="Edit"
+                  method="post"
+                  class="news-edit-form">
+
+                <input type="hidden"
+                       asp-for="Id" />
+
+
+                <!-- Validation -->
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3">
+                </div>
+
+
+                <!-- Title -->
+
+                <div class="form-group">
+
+                    <label asp-for="Title">
+                        Title
+                    </label>
+
+                    <input asp-for="Title"
+                           class="form-control" />
+
+                    <span asp-validation-for="Title"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <!-- Content -->
+
+                <div class="form-group">
+
+                    <label asp-for="Content">
+                        Content
+                    </label>
+
+                    <textarea asp-for="Content"
+                              class="form-control"
+                              rows="7"></textarea>
+
+                    <span asp-validation-for="Content"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <!-- Important -->
+
+                <div class="form-group">
+
+                    <label class="checkbox-label">
+
+                        <input asp-for="IsImportant" />
+
+                        <span>
+                            Mark as important
+                        </span>
+
+                    </label>
+
+                </div>
+
+
+                <!-- Actions -->
+
+                <div class="form-actions">
+
+                    <button type="submit"
+                            class="employee-add-button">
+
+                        Save Changes
+
+                    </button>
+
+
+                    <a asp-action="Index"
+                       class="clear-button">
+
+                        Cancel
+
+                    </a>
+
+                </div>
+
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync(
+            "_ValidationScriptsPartial");
+    }
+
+}

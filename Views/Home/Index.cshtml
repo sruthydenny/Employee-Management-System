@@ -4,62 +4,675 @@
     ViewData["Title"] = "Dashboard";
 }
 
-<div class="container mt-5">
+<div class="dashboard">
 
-    <div class="text-center mb-5">
-        <h1 class="display-4 fw-bold">👨‍💼 Employee Management Dashboard</h1>
-        <p class="text-muted">Manage employees and monitor company statistics.</p>
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <div class="dashboard-header">
+
+        <div>
+
+            <span class="eyebrow">
+                SYSTEM ADMINISTRATION
+            </span>
+
+            <h1>
+                Good morning 👋
+            </h1>
+
+            <p>
+                Here's an overview of your employee management system.
+            </p>
+
+        </div>
+
+
+        <div class="dashboard-date">
+
+            <span>
+                System Status
+            </span>
+
+            <strong>
+                ● Operational
+            </strong>
+
+        </div>
+
     </div>
 
-    <div class="row">
 
-        <div class="col-md-4 mb-4">
-            <div class="card shadow border-0 bg-primary text-white">
-                <div class="card-body text-center">
-                    <h5>Total Employees</h5>
-                    <h2>@Model.TotalEmployees</h2>
+    <!-- =====================================================
+         MAIN STATISTICS
+    ====================================================== -->
+
+    <div class="stats-grid">
+
+
+        <!-- EMPLOYEES -->
+
+        <div class="stat-card">
+
+            <div class="stat-card-top">
+
+                <div class="stat-icon purple">
+                    <span>👥</span>
                 </div>
+
+                <span class="stat-label">
+                    WORKFORCE
+                </span>
+
             </div>
+
+            <div class="stat-value">
+                @Model.TotalEmployees
+            </div>
+
+            <div class="stat-description">
+                Total employees
+            </div>
+
         </div>
 
-        <div class="col-md-4 mb-4">
-            <div class="card shadow border-0 bg-success text-white">
-                <div class="card-body text-center">
-                    <h5>Departments</h5>
-                    <h2>@Model.TotalDepartments</h2>
+
+        <!-- DEPARTMENTS -->
+
+        <div class="stat-card">
+
+            <div class="stat-card-top">
+
+                <div class="stat-icon green">
+                    <span>🏢</span>
                 </div>
+
+                <span class="stat-label">
+                    STRUCTURE
+                </span>
+
             </div>
+
+            <div class="stat-value">
+                @Model.TotalDepartments
+            </div>
+
+            <div class="stat-description">
+                Active departments
+            </div>
+
         </div>
 
-        <div class="col-md-4 mb-4">
-            <div class="card shadow border-0 bg-warning text-dark">
-                <div class="card-body text-center">
-                    <h5>Average Salary</h5>
-                    <h2>@Model.AverageSalary.ToString("C")</h2>
+
+        <!-- SALARY -->
+
+        <div class="stat-card">
+
+            <div class="stat-card-top">
+
+                <div class="stat-icon orange">
+                    <span>€</span>
                 </div>
+
+                <span class="stat-label">
+                    COMPENSATION
+                </span>
+
             </div>
+
+            <div class="stat-value salary-value">
+                @Model.AverageSalary.ToString("C")
+            </div>
+
+            <div class="stat-description">
+                Average employee salary
+            </div>
+
+        </div>
+
+
+        <!-- TASKS -->
+
+        <div class="stat-card">
+
+            <div class="stat-card-top">
+
+                <div class="stat-icon purple">
+                    <span>✓</span>
+                </div>
+
+                <span class="stat-label">
+                    TASKS
+                </span>
+
+            </div>
+
+            <div class="stat-value">
+                @ViewBag.TotalTasks
+            </div>
+
+            <div class="stat-description">
+                Total employee tasks
+            </div>
+
         </div>
 
     </div>
 
-    <div class="card shadow mt-4">
-        <div class="card-header bg-dark text-white">
-            Quick Actions
+
+    <!-- =====================================================
+         MANAGEMENT OVERVIEW
+    ====================================================== -->
+
+    <div class="dashboard-grid">
+
+
+        <!-- SYSTEM OVERVIEW -->
+
+        <div class="dashboard-panel overview-panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <span class="panel-eyebrow">
+                        SYSTEM OVERVIEW
+                    </span>
+
+                    <h2>
+                        Employee Management
+                    </h2>
+
+                </div>
+
+                <span class="status-badge">
+
+                    <span class="status-dot"></span>
+
+                    Operational
+
+                </span>
+
+            </div>
+
+
+            <div class="overview-content">
+
+
+                <div class="overview-item">
+
+                    <div class="overview-icon">
+                        👤
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Employee Records
+                        </strong>
+
+                        <span>
+                            Manage employee information and records
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="overview-item">
+
+                    <div class="overview-icon">
+                        🏢
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Department Structure
+                        </strong>
+
+                        <span>
+                            Organise employees by department
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="overview-item">
+
+                    <div class="overview-icon">
+                        ✓
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Workforce Tasks
+                        </strong>
+
+                        <span>
+                            Assign and monitor employee tasks
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="overview-item">
+
+                    <div class="overview-icon">
+                        ⭐
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Performance
+                        </strong>
+
+                        <span>
+                            Monitor employee performance records
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
 
-        <div class="card-body">
 
-            <a asp-controller="Employees"
-               asp-action="Index"
-               class="btn btn-primary me-2">
-                View Employees
-            </a>
+        <!-- QUICK ACTIONS -->
 
-            <a asp-controller="Employees"
-               asp-action="Create"
-               class="btn btn-success">
-                Add Employee
-            </a>
+        <div class="dashboard-panel actions-panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <span class="panel-eyebrow">
+                        ADMINISTRATION
+                    </span>
+
+                    <h2>
+                        Quick Actions
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="quick-actions">
+
+
+                <!-- ADD EMPLOYEE -->
+
+                <a asp-controller="Employees"
+                   asp-action="Create"
+                   class="action-card primary-action">
+
+                    <div class="action-icon">
+                        +
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Add Employee
+                        </strong>
+
+                        <span>
+                            Create a new employee record
+                        </span>
+
+                    </div>
+
+                    <span class="action-arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+                <!-- EMPLOYEES -->
+
+                <a asp-controller="Employees"
+                   asp-action="Index"
+                   class="action-card">
+
+                    <div class="action-icon secondary-icon">
+                        ≡
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Employees
+                        </strong>
+
+                        <span>
+                            Browse and manage employees
+                        </span>
+
+                    </div>
+
+                    <span class="action-arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+                <!-- USERS -->
+
+                <a asp-controller="Users"
+                   asp-action="Index"
+                   class="action-card">
+
+                    <div class="action-icon secondary-icon">
+                        👤
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            User Management
+                        </strong>
+
+                        <span>
+                            Manage accounts and roles
+                        </span>
+
+                    </div>
+
+                    <span class="action-arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+                <!-- TASKS -->
+
+                <a asp-controller="Tasks"
+                   asp-action="Index"
+                   class="action-card">
+
+                    <div class="action-icon secondary-icon">
+                        ✓
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Manage Tasks
+                        </strong>
+
+                        <span>
+                            Assign and monitor employee tasks
+                        </span>
+
+                    </div>
+
+                    <span class="action-arrow">
+                        →
+                    </span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         ADMIN STATISTICS
+    ====================================================== -->
+
+    <div class="stats-grid">
+
+
+        <!-- NEWS -->
+
+        <div class="stat-card">
+
+            <div class="stat-card-top">
+
+                <div class="stat-icon purple">
+                    <span>📰</span>
+                </div>
+
+                <span class="stat-label">
+                    NEWS
+                </span>
+
+            </div>
+
+            <div class="stat-value">
+                @ViewBag.TotalNews
+            </div>
+
+            <div class="stat-description">
+                Company announcements
+            </div>
+
+        </div>
+
+
+        <!-- EVENTS -->
+
+        <div class="stat-card">
+
+            <div class="stat-card-top">
+
+                <div class="stat-icon green">
+                    <span>📅</span>
+                </div>
+
+                <span class="stat-label">
+                    EVENTS
+                </span>
+
+            </div>
+
+            <div class="stat-value">
+                @ViewBag.UpcomingEvents
+            </div>
+
+            <div class="stat-description">
+                Upcoming company events
+            </div>
+
+        </div>
+
+
+        <!-- PENDING TASKS -->
+
+        <div class="stat-card">
+
+            <div class="stat-card-top">
+
+                <div class="stat-icon orange">
+                    <span>⏰</span>
+                </div>
+
+                <span class="stat-label">
+                    PENDING
+                </span>
+
+            </div>
+
+            <div class="stat-value">
+                @ViewBag.PendingTasks
+            </div>
+
+            <div class="stat-description">
+                Tasks awaiting completion
+            </div>
+
+        </div>
+
+
+        <!-- PERFORMANCE -->
+
+        <div class="stat-card">
+
+            <div class="stat-card-top">
+
+                <div class="stat-icon purple">
+                    <span>⭐</span>
+                </div>
+
+                <span class="stat-label">
+                    PERFORMANCE
+                </span>
+
+            </div>
+
+            <div class="stat-value">
+                @ViewBag.TotalPerformanceRecords
+            </div>
+
+            <div class="stat-description">
+                Performance records
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         ATTENDANCE
+    ====================================================== -->
+
+    <div class="dashboard-panel overview-panel">
+
+        <div class="panel-header">
+
+            <div>
+
+                <span class="panel-eyebrow">
+                    ATTENDANCE
+                </span>
+
+                <h2>
+                    Today's Workforce Attendance
+                </h2>
+
+            </div>
+
+            <span class="status-badge">
+
+                <span class="status-dot"></span>
+
+                Live Data
+
+            </span>
+
+        </div>
+
+
+        <div class="overview-content">
+
+
+            <div class="overview-item">
+
+                <div class="overview-icon">
+                    📊
+                </div>
+
+                <div>
+
+                    <strong>
+                        Attendance Today
+                    </strong>
+
+                    <span>
+                        @ViewBag.TodayAttendancePercentage.ToString("N1")% attendance
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="overview-item">
+
+                <div class="overview-icon">
+                    ✓
+                </div>
+
+                <div>
+
+                    <strong>
+                        Present
+                    </strong>
+
+                    <span>
+                        @ViewBag.TodayPresent employees present today
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="overview-item">
+
+                <div class="overview-icon">
+                    👥
+                </div>
+
+                <div>
+
+                    <strong>
+                        Attendance Records
+                    </strong>
+
+                    <span>
+                        @ViewBag.TodayAttendance records recorded today
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         DATA INSIGHT
+    ====================================================== -->
+
+    <div class="insight-banner">
+
+        <div class="insight-icon">
+            ✓
+        </div>
+
+        <div>
+
+            <strong>
+                Centralised workforce management
+            </strong>
+
+            <p>
+                Use the administration tools to manage employees,
+                user accounts, tasks, company updates, events,
+                attendance and performance records from one system.
+            </p>
 
         </div>
 

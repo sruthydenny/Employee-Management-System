@@ -1,49 +1,231 @@
 @model EmployeeManagementSystem.Models.Employee
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Employee";
 }
 
-<h1>Edit</h1>
+<div class="create-employee-page">
 
-<h4>Employee</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="FullName" class="control-label"></label>
-                <input asp-for="FullName" class="form-control" />
-                <span asp-validation-for="FullName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Department" class="control-label"></label>
-                <input asp-for="Department" class="form-control" />
-                <span asp-validation-for="Department" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Salary" class="control-label"></label>
-                <input asp-for="Salary" class="form-control" />
-                <span asp-validation-for="Salary" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+    <!-- Header -->
+    <div class="create-header">
+
+        <div>
+            <span class="eyebrow">EMPLOYEE OPERATIONS</span>
+
+            <h1>Edit Employee</h1>
+
+            <p>
+                Update employee information and workforce details.
+            </p>
+        </div>
+
+        <a asp-action="Index" class="back-button">
+            ← Back to Employees
+        </a>
+
     </div>
+
+
+    <!-- Edit Card -->
+    <div class="create-card">
+
+        <!-- Card Header -->
+        <div class="create-card-header">
+
+            <div class="create-icon">
+                ✎
+            </div>
+
+            <div>
+                <h2>Employee Information</h2>
+
+                <p>
+                    Update the details for @Model.FullName.
+                </p>
+            </div>
+
+        </div>
+
+
+        <!-- Form -->
+        <form asp-action="Edit">
+
+            <div asp-validation-summary="ModelOnly"
+                 class="validation-summary">
+            </div>
+
+            <input type="hidden" asp-for="Id" />
+
+
+            <!-- Personal Information -->
+            <div class="form-section">
+
+                <div class="section-title">
+                    PERSONAL INFORMATION
+                </div>
+
+                <div class="form-row">
+
+                    <div class="form-field">
+
+                        <label asp-for="FullName"></label>
+
+                        <input asp-for="FullName"
+                               class="modern-input"
+                               placeholder="Enter full name" />
+
+                        <span asp-validation-for="FullName"
+                              class="field-error">
+                        </span>
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label asp-for="Email"></label>
+
+                        <input asp-for="Email"
+                               class="modern-input"
+                               placeholder="Enter email address" />
+
+                        <span asp-validation-for="Email"
+                              class="field-error">
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Employment Information -->
+            <div class="form-section">
+
+                <div class="section-title">
+                    EMPLOYMENT INFORMATION
+                </div>
+
+                <div class="form-row">
+
+                    <div class="form-field">
+
+                        <label asp-for="Department"></label>
+
+                        <input asp-for="Department"
+                               class="modern-input"
+                               placeholder="e.g. Finance, IT, HR" />
+
+                        <span asp-validation-for="Department"
+                              class="field-error">
+                        </span>
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label asp-for="Position"></label>
+
+                        <input asp-for="Position"
+                               class="modern-input"
+                               placeholder="e.g. Software Engineer" />
+
+                        <span asp-validation-for="Position"
+                              class="field-error">
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-row">
+
+                    <div class="form-field">
+
+                        <label asp-for="Salary"></label>
+
+                        <div class="input-prefix">
+
+                            <span>€</span>
+
+                            <input asp-for="Salary"
+                                   class="modern-input salary-input"
+                                   placeholder="0.00" />
+
+                        </div>
+
+                        <span asp-validation-for="Salary"
+                              class="field-error">
+                        </span>
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label asp-for="HireDate"></label>
+
+                        <input asp-for="HireDate"
+                               class="modern-input"
+                               type="date" />
+
+                        <span asp-validation-for="HireDate"
+                              class="field-error">
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Actions -->
+            <div class="form-actions">
+
+                <a asp-action="Index"
+                   class="cancel-button">
+                    Cancel
+                </a>
+
+                <button type="submit"
+                        class="save-button">
+                    ✓ Save Changes
+                </button>
+
+            </div>
+
+
+            <!-- Notice -->
+            <div class="form-notice">
+
+                <span>ⓘ</span>
+
+                <div>
+
+                    <strong>Keep employee information accurate</strong>
+
+                    <p>
+                        Make sure the employee's contact, department,
+                        position and compensation details are up to date.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

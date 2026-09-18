@@ -26,7 +26,7 @@ namespace EmployeeManagementSystem.Models
         public string Position { get; set; } = string.Empty;
 
         [Required]
-        [Range(0, 1000000)]
+        [Range(1, 1000000, ErrorMessage = "Salary must be greater than 0.")]
         [DataType(DataType.Currency)]
         public decimal Salary { get; set; }
 

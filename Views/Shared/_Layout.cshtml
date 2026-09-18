@@ -1,74 +1,541 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - EmployeeManagementSystem</title>
-    <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/EmployeeManagementSystem.styles.css" asp-append-version="true" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] - WorkSphere</title>
+
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/EmployeeManagementSystem.styles.css"
+          asp-append-version="true" />
+
 </head>
+
+
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">EmployeeManagementSystem</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
 
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark"
-                               asp-area=""
-                               asp-controller="Home"
-                               asp-action="Index">
-                                Home
-                            </a>
-                        </li>
+    <div class="app-shell">
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark"
-                               asp-area=""
-                               asp-controller="Employees"
-                               asp-action="Index">
-                                Employees
-                            </a>
-                        </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark"
-                               asp-area=""
-                               asp-controller="Home"
-                               asp-action="Privacy">
-                                Privacy
-                            </a>
-                        </li>
-                    </ul>
+        <!-- =====================================================
+             SIDEBAR
+             ===================================================== -->
 
-                    @*<partial name="_LoginPartial" />*@
+        <aside class="sidebar"
+               id="sidebar">
+
+
+            <!-- Mobile Close Button -->
+
+            <button class="sidebar-close-button"
+                    type="button"
+                    id="sidebarCloseButton"
+                    aria-label="Close navigation">
+
+                ×
+
+            </button>
+
+
+            <!-- Brand -->
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    WS
+                </div>
+
+                <div class="brand-text">
+
+                    <span class="brand-name">
+                        WorkSphere
+                    </span>
+
+                    <span class="brand-subtitle">
+                        Employee Operations
+                    </span>
 
                 </div>
+
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+
+
+            <!-- Workspace -->
+
+            <div class="sidebar-section-title">
+                WORKSPACE
+            </div>
+
+
+            <nav class="sidebar-nav">
+
+
+                <!-- Dashboard -->
+
+                <a asp-controller="Home"
+                   asp-action="Index"
+                   class="sidebar-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")">
+
+                    <span class="nav-icon">
+                        ⌂
+                    </span>
+
+                    <span>
+                        Dashboard
+                    </span>
+
+                </a>
+
+
+                <!-- Employees / Profile -->
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-controller="Employees"
+                       asp-action="Index"
+                       class="sidebar-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Employees" ? "active" : "")">
+
+                        <span class="nav-icon">
+                            ♙
+                        </span>
+
+                        <span>
+                            Employees
+                        </span>
+
+                    </a>
+                }
+                else
+                {
+                    <a asp-controller="Employees"
+                       asp-action="Index"
+                       class="sidebar-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Employees" ? "active" : "")">
+
+                        <span class="nav-icon">
+                            ♙
+                        </span>
+
+                        <span>
+                            Profile
+                        </span>
+
+                    </a>
+                }
+
+
+                @if (User.IsInRole("Admin"))
+                {
+
+                    <!-- Tasks -->
+
+                    <a asp-controller="Tasks"
+                       asp-action="Index"
+                       class="sidebar-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Tasks" ? "active" : "")">
+
+                        <span class="nav-icon">
+                            ✓
+                        </span>
+
+                        <span>
+                            Tasks
+                        </span>
+
+                    </a>
+
+
+                    <!-- Company News -->
+
+                    <a asp-controller="News"
+                       asp-action="Index"
+                       class="sidebar-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "News" ? "active" : "")">
+
+                        <span class="nav-icon">
+                            ▣
+                        </span>
+
+                        <span>
+                            Company News
+                        </span>
+
+                    </a>
+
+
+                    <!-- Company Events -->
+
+                    <a asp-controller="Events"
+                       asp-action="Index"
+                       class="sidebar-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Events" ? "active" : "")">
+
+                        <span class="nav-icon">
+                            ◆
+                        </span>
+
+                        <span>
+                            Company Events
+                        </span>
+
+                    </a>
+
+
+                    <!-- Attendance -->
+
+                    <a asp-controller="Attendances"
+                       asp-action="Index"
+                       class="sidebar-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Attendances" ? "active" : "")">
+
+                        <span class="nav-icon">
+                            ◷
+                        </span>
+
+                        <span>
+                            Attendance
+                        </span>
+
+                    </a>
+
+
+                    <!-- Performance -->
+
+                    <a asp-controller="Performances"
+                       asp-action="Index"
+                       class="sidebar-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Performances" ? "active" : "")">
+
+                        <span class="nav-icon">
+                            ★
+                        </span>
+
+                        <span>
+                            Performance
+                        </span>
+
+                    </a>
+
+                }
+
+            </nav>
+
+
+            <!-- System -->
+
+            <div class="sidebar-section-title">
+                SYSTEM
+            </div>
+
+
+            <nav class="sidebar-nav">
+
+
+                <!-- Privacy -->
+
+                <a asp-controller="Privacy"
+                   asp-action="Index"
+                   class="sidebar-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Privacy" ? "active" : "")">
+
+                    <span class="nav-icon">
+                        ...
+                    </span>
+
+                    <span>
+                        Privacy
+                    </span>
+
+                </a>
+
+
+                @if (User.IsInRole("Admin"))
+                {
+
+                    <!-- User Management -->
+
+                    <a asp-controller="Users"
+                       asp-action="Index"
+                       class="sidebar-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Users" ? "active" : "")">
+
+                        <span class="nav-icon">
+                            ♙
+                        </span>
+
+                        <span>
+                            User Management
+                        </span>
+
+                    </a>
+
+                }
+
+            </nav>
+
+
+            <!-- AI Assistant -->
+
+            <a asp-controller="AiAssistant"
+               asp-action="Index"
+               class="sidebar-help text-decoration-none">
+
+                <div class="help-icon">
+                    ?
+                </div>
+
+                <div>
+
+                    <strong>
+                        Need help?
+                    </strong>
+
+                    <span>
+                        Ask WorkSphere AI Assistant
+                    </span>
+
+                </div>
+
+            </a>
+
+
+        </aside>
+
+
+
+        <!-- =====================================================
+             MAIN AREA
+             ===================================================== -->
+
+        <div class="main-area">
+
+
+            <!-- =================================================
+                 TOPBAR
+                 ================================================= -->
+
+            <header class="topbar">
+
+
+                <!-- Left -->
+
+                <div class="topbar-left">
+
+
+                    <!-- Mobile Menu -->
+
+                    <button class="mobile-menu-button"
+                            type="button"
+                            id="mobileMenuButton"
+                            aria-label="Toggle navigation"
+                            aria-expanded="false">
+
+                        ☰
+
+                    </button>
+
+
+                    <!-- Page Context -->
+
+                    <div class="page-context">
+
+                        <span class="page-context-label">
+                            Employee Operations
+                        </span>
+
+                        <span class="page-context-title">
+                            @ViewData["Title"]
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- Right -->
+
+                <div class="topbar-right">
+
+
+                    <!-- Theme -->
+
+                    <button class="notification-button"
+                            type="button"
+                            aria-label="Toggle theme"
+                            title="Toggle theme">
+
+                        ☾
+
+                    </button>
+
+
+
+                    <!-- Account -->
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+
+                        <div class="dropdown profile-dropdown">
+
+
+                            <!-- Profile Button -->
+
+                            <button class="profile-dropdown-button"
+                                    type="button"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
+                                    aria-label="Account menu">
+
+
+                                <div class="profile-avatar">
+
+                                    @(User.Identity.Name?
+                                        .Substring(0, 1)
+                                        .ToUpper() ?? "A")
+
+                                </div>
+
+
+                            </button>
+
+
+
+                            <!-- Dropdown -->
+
+                            <div class="dropdown-menu dropdown-menu-end profile-dropdown-menu">
+
+
+                                <!-- Account Information -->
+
+                                <div class="profile-dropdown-info">
+
+                                    <strong>
+
+                                        @(User.Identity.Name ??
+                                            "Administrator")
+
+                                    </strong>
+
+
+                                    <span>
+
+                                        @(User.IsInRole("Admin")
+                                            ? "System Admin"
+                                            : "User")
+
+                                    </span>
+
+                                </div>
+
+
+                                <div class="dropdown-divider"></div>
+
+
+
+                                <!-- Logout -->
+
+                                <form asp-area="Identity"
+                                      asp-page="/Account/Logout"
+                                      asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })"
+                                      method="post">
+
+
+                                    <button type="submit"
+                                            class="dropdown-item profile-logout">
+
+                                        Logout
+
+                                    </button>
+
+
+                                </form>
+
+
+                            </div>
+
+
+                        </div>
+
+                    }
+                    else
+                    {
+
+                        <!-- Sign In -->
+
+                        <a asp-area="Identity"
+                           asp-page="/Account/Login"
+                           class="login-button">
+
+                            Sign In
+
+                        </a>
+
+                    }
+
+
+                </div>
+
+
+            </header>
+
+
+
+            <!-- =================================================
+                 PAGE CONTENT
+                 ================================================= -->
+
+            <main class="content-area">
+
+                @RenderBody()
+
+            </main>
+
+
+
+            <!-- =================================================
+                 FOOTER
+                 ================================================= -->
+
+            <footer class="app-footer">
+
+                <span>
+                    © 2026 WorkSphere
+                </span>
+
+                <span>
+                    Employee Operations Portal
+                </span>
+
+            </footer>
+
+
+        </div>
+
+
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - EmployeeManagementSystem - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+
+
+    <!-- =====================================================
+         SCRIPTS
+         ===================================================== -->
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+
+    <script src="~/js/site.js"
+            asp-append-version="true">
+    </script>
+
+    @await RenderSectionAsync(
+        "Scripts",
+        required: false)
+
 </body>
+
 </html>

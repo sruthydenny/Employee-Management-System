@@ -1,19 +1,28 @@
 using EmployeeManagementSystem.Data;
+using EmployeeManagementSystem.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddJsonFile(
+    "appsettings.Local.json",
+    optional: true,
+    reloadOnChange: true);
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddHttpClient();
+builder.Services.AddScoped<WorkSphereAiService>();
 builder.Services.AddRazorPages();
 
 // Database
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Identity with Roles
-builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 {
     options.SignIn.RequireConfirmedAccount = false;
 })
@@ -28,7 +37,7 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
 
     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-    var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
 
     string[] roles = { "Admin", "User" };
 
@@ -45,7 +54,8 @@ using (var scope = app.Services.CreateScope())
 
     var adminUser = await userManager.FindByEmailAsync(adminEmail);
 
-    if (adminUser != null && !await userManager.IsInRoleAsync(adminUser, "Admin"))
+    if (adminUser != null &&
+        !await userManager.IsInRoleAsync(adminUser, "Admin"))
     {
         await userManager.AddToRoleAsync(adminUser, "Admin");
     }

@@ -1,0 +1,276 @@
+﻿@model List<EmployeeManagementSystem.Controllers.UserViewModel>
+
+@{
+    ViewData["Title"] = "User Management";
+}
+
+<div class="users-page">
+
+    <!-- Page Header -->
+    <div class="users-header">
+
+        <div>
+            <span class="eyebrow">SYSTEM ADMINISTRATION</span>
+
+            <h1>User Management</h1>
+
+            <p>
+                Manage user accounts, system roles, and employee assignments.
+            </p>
+        </div>
+
+    </div>
+
+
+    <!-- Users Card -->
+    <div class="users-card">
+
+        <!-- Card Header -->
+        <div class="users-card-header">
+
+            <div>
+                <h2>System Users</h2>
+
+                <p>
+                    Manage access levels and employee assignments for registered accounts.
+                </p>
+            </div>
+
+            <div class="user-count">
+                @Model.Count Users
+            </div>
+
+        </div>
+
+
+        <!-- Error Message -->
+        @if (TempData["Error"] != null)
+        {
+            <div class="users-error">
+                @TempData["Error"]
+            </div>
+        }
+
+
+        <!-- Success Message -->
+        @if (TempData["Success"] != null)
+        {
+            <div class="users-success">
+                @TempData["Success"]
+            </div>
+        }
+
+
+        <!-- Users Table -->
+        @if (Model.Any())
+        {
+            <div class="users-table-wrapper">
+
+                <table class="users-table">
+
+                    <thead>
+
+                        <tr>
+                            <th>USER</th>
+                            <th>ROLE</th>
+                            <th>EMPLOYEE</th>
+                            <th class="users-action-column">ACTION</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        @foreach (var user in Model)
+                        {
+                            <tr>
+
+                                <!-- USER -->
+                                <td>
+
+                                    <div class="user-account">
+
+                                        <div class="user-avatar">
+                                            @(string.IsNullOrEmpty(user.Email)
+                                                ? "?"
+                                                : user.Email.Substring(0, 1).ToUpper())
+                                        </div>
+
+                                        <div>
+
+                                            <strong>
+                                                @user.Email
+                                            </strong>
+
+                                            <span>
+                                                Registered account
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+
+                                <!-- ROLE -->
+                                <td>
+
+                                    @if (user.Role == "Admin")
+                                    {
+                                        <span class="role-badge admin-role">
+                                            Admin
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="role-badge user-role">
+                                            User
+                                        </span>
+                                    }
+
+                                </td>
+
+
+                                <!-- EMPLOYEE ASSIGNMENT -->
+                                <td>
+
+                                    @if (user.EmployeeId != null)
+                                    {
+                                        <div class="assigned-employee">
+
+                                            <strong>
+                                                @user.EmployeeName
+                                            </strong>
+
+                                            <span>
+                                                Employee #@user.EmployeeId
+                                            </span>
+
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <span class="unassigned-employee">
+                                            Not assigned
+                                        </span>
+                                    }
+
+                                </td>
+
+
+                                <!-- ACTIONS -->
+                                <td class="users-action-column">
+
+                                    <!-- ROLE ACTION -->
+                                    @if (user.Role == "Admin")
+                                    {
+                                        <form asp-action="RemoveAdmin"
+                                              method="post"
+                                              class="role-form">
+
+                                            <input type="hidden"
+                                                   name="id"
+                                                   value="@user.Id" />
+
+                                            <button type="submit"
+                                                    class="remove-admin-button">
+                                                Remove Admin
+                                            </button>
+
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <form asp-action="MakeAdmin"
+                                              method="post"
+                                              class="role-form">
+
+                                            <input type="hidden"
+                                                   name="id"
+                                                   value="@user.Id" />
+
+                                            <button type="submit"
+                                                    class="make-admin-button">
+                                                Make Admin
+                                            </button>
+
+                                        </form>
+                                    }
+
+
+                                    <!-- EMPLOYEE ASSIGNMENT -->
+                                    @if (user.Role != "Admin")
+                                    {
+                                        <form asp-action="AssignEmployee"
+                                              method="post"
+                                              class="employee-assignment-form">
+
+                                            <input type="hidden"
+                                                   name="id"
+                                                   value="@user.Id" />
+
+                                            <select name="employeeId"
+                                                    class="employee-assignment-select">
+
+                                                <!-- Remove assignment -->
+                                                <option value="">
+                                                    @(user.EmployeeId == null
+                                                        ? "Assign employee..."
+                                                        : "Remove assignment")
+                                                </option>
+
+
+                                                <!-- Available employees -->
+                                                @foreach (var employee in (List<EmployeeManagementSystem.Models.Employee>)ViewBag.Employees)
+                                                {
+                                                    <option value="@employee.Id"
+                                                            selected="@(user.EmployeeId == employee.Id ? "selected" : null)">
+                                                        @employee.FullName
+                                                    </option>
+                                                }
+
+                                            </select>
+
+
+                                            <button type="submit"
+                                                    class="assign-employee-button">
+                                                Save
+                                            </button>
+
+                                        </form>
+                                    }
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+        }
+        else
+        {
+            <!-- Empty State -->
+            <div class="users-empty-state">
+
+                <div class="users-empty-icon">
+                    👥
+                </div>
+
+                <h3>No users found</h3>
+
+                <p>
+                    There are currently no registered users.
+                </p>
+
+            </div>
+        }
+
+    </div>
+
+</div>

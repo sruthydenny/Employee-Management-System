@@ -20,6 +20,10 @@ TestResults/
 *.mdf
 *.ldf
 
+# Local configuration / secrets
+appsettings.Development.json
+appsettings.Local.json
+
 # Operating system files
 .DS_Store
 Thumbs.db

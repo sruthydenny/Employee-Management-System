@@ -3,4 +3,436 @@
 }
 <h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<p>Use this page to detail your site's p@model EmployeeManagementSystem.Models.UserDashboardViewModel
+
+@{
+    ViewData["Title"] = "My Dashboard";
+}
+
+<div class="dashboard">
+
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+
+        <div>
+            <span class="eyebrow">MY WORKSPACE</span>
+
+            <h1>Welcome, @Model.FullName 👋</h1>
+
+            <p>
+                Here's your personal employee information.
+            </p>
+        </div>
+
+        <div class="dashboard-date">
+            <span>Employee Portal</span>
+            <strong>My Information</strong>
+        </div>
+
+    </div>
+
+
+    @if (Model.EmployeeId == 0)
+    {
+        <!-- No Employee Assigned -->
+
+        <div class="dashboard-panel overview-panel">
+
+            <div class="panel-header">
+
+                <div>
+                    <span class="panel-eyebrow">
+                        ACCOUNT STATUS
+                    </span>
+
+                    <h2>Employee Profile Not Assigned</h2>
+                </div>
+
+            </div>
+
+            <div class="overview-content">
+
+                <div class="overview-item">
+
+                    <div class="overview-icon">
+                        !
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            No employee record is linked to your account.
+                        </strong>
+
+                        <span>
+                            Please contact an administrator to have your
+                            employee account assigned.
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    }
+    else
+    {
+        <!-- Personal Statistics -->
+
+        <div class="stats-grid">
+
+            <!-- Department -->
+
+            <div class="stat-card">
+
+                <div class="stat-card-top">
+
+                    <div class="stat-icon green">
+                        <span>🏢</span>
+                    </div>
+
+                    <span class="stat-label">
+                        DEPARTMENT
+                    </span>
+
+                </div>
+
+                <div class="stat-value"
+                     style="font-size: 24px;">
+
+                    @Model.Department
+
+                </div>
+
+                <div class="stat-description">
+                    Your department
+                </div>
+
+            </div>
+
+
+            <!-- Position -->
+
+            <div class="stat-card">
+
+                <div class="stat-card-top">
+
+                    <div class="stat-icon purple">
+                        <span>💼</span>
+                    </div>
+
+                    <span class="stat-label">
+                        POSITION
+                    </span>
+
+                </div>
+
+                <div class="stat-value"
+                     style="font-size: 24px;">
+
+                    @Model.Position
+
+                </div>
+
+                <div class="stat-description">
+                    Your current position
+                </div>
+
+            </div>
+
+
+            <!-- Hire Date -->
+
+            <div class="stat-card">
+
+                <div class="stat-card-top">
+
+                    <div class="stat-icon orange">
+                        <span>📅</span>
+                    </div>
+
+                    <span class="stat-label">
+                        HIRE DATE
+                    </span>
+
+                </div>
+
+                <div class="stat-value"
+                     style="font-size: 24px;">
+
+                    @Model.HireDate.ToString("dd MMM yyyy")
+
+                </div>
+
+                <div class="stat-description">
+                    Your joining date
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Main Dashboard -->
+
+        <div class="dashboard-grid">
+
+            <!-- Employee Information -->
+
+            <div class="dashboard-panel overview-panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <span class="panel-eyebrow">
+                            MY PROFILE
+                        </span>
+
+                        <h2>Employee Information</h2>
+
+                    </div>
+
+                    <span class="status-badge">
+
+                        <span class="status-dot"></span>
+
+                        Active
+
+                    </span>
+
+                </div>
+
+
+                <div class="overview-content">
+
+                    <!-- Name -->
+
+                    <div class="overview-item">
+
+                        <div class="overview-icon">
+                            👤
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                @Model.FullName
+                            </strong>
+
+                            <span>
+                                @Model.Email
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Department -->
+
+                    <div class="overview-item">
+
+                        <div class="overview-icon">
+                            🏢
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                @Model.Department
+                            </strong>
+
+                            <span>
+                                Department
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Position -->
+
+                    <div class="overview-item">
+
+                        <div class="overview-icon">
+                            💼
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                @Model.Position
+                            </strong>
+
+                            <span>
+                                Current position
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Salary -->
+
+                    <div class="overview-item">
+
+                        <div class="overview-icon">
+                            €
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                @Model.Salary.ToString("C")
+                            </strong>
+
+                            <span>
+                                Current salary
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Hire Date -->
+
+                    <div class="overview-item">
+
+                        <div class="overview-icon">
+                            📅
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                @Model.HireDate.ToString("dd MMM yyyy")
+                            </strong>
+
+                            <span>
+                                Hire date
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- My Actions -->
+
+            <div class="dashboard-panel actions-panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <span class="panel-eyebrow">
+                            ACTIONS
+                        </span>
+
+                        <h2>My Actions</h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="quick-actions">
+
+                    <a asp-controller="Employees"
+                       asp-action="Details"
+                       asp-route-id="@Model.EmployeeId"
+                       class="action-card primary-action">
+
+                        <div class="action-icon">
+                            👤
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                View My Profile
+                            </strong>
+
+                            <span>
+                                View your complete employee record
+                            </span>
+
+                        </div>
+
+                        <span class="action-arrow">
+                            →
+                        </span>
+
+                    </a>
+
+
+                    <a asp-controller="Employees"
+                       asp-action="Index"
+                       class="action-card">
+
+                        <div class="action-icon secondary-icon">
+                            ≡
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                My Employee Record
+                            </strong>
+
+                            <span>
+                                View your employee information
+                            </span>
+
+                        </div>
+
+                        <span class="action-arrow">
+                            →
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Information Banner -->
+
+        <div class="insight-banner">
+
+            <div class="insight-icon">
+                ✓
+            </div>
+
+            <div>
+
+                <strong>
+                    Your employee information
+                </strong>
+
+                <p>
+                    This dashboard displays information associated with your
+                    employee account. Contact an administrator if any
+                    information needs to be updated.
+                </p>
+
+            </div>
+
+        </div>
+
+    }
+
+</div>rivacy policy.</p>

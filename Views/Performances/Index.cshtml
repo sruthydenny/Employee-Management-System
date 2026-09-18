@@ -1,0 +1,235 @@
+﻿@model IEnumerable<EmployeeManagementSystem.Models.EmployeePerformance>
+
+@{
+    ViewData["Title"] = "Performance";
+}
+
+<div class="container mt-4">
+
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold">
+                Employee Performance
+            </h2>
+
+            <p class="text-muted mb-0">
+                Manage employee performance records and scores.
+            </p>
+        </div>
+
+        <a asp-action="Create"
+           class="btn btn-primary">
+            + Add Performance
+        </a>
+
+    </div>
+
+
+    <!-- Success Message -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show"
+             role="alert">
+
+            @TempData["SuccessMessage"]
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert">
+            </button>
+
+        </div>
+    }
+
+
+    <!-- Performance Records -->
+    @if (Model != null && Model.Any())
+    {
+        <div class="card shadow-sm performance-card">
+
+            <div class="card-body p-0">
+
+                <div class="table-responsive performance-table-wrapper">
+
+                    <table class="table table-hover align-middle mb-0 performance-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Employee
+                                </th>
+
+                                <th>
+                                    Month
+                                </th>
+
+                                <th>
+                                    Score
+                                </th>
+
+                                <th>
+                                    Comments
+                                </th>
+
+                                <th class="text-end">
+                                    Actions
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+
+                                    <!-- Employee -->
+
+                                    <td>
+
+                                        @if (item.Employee != null)
+                                        {
+                                            <strong>
+                                                @item.Employee.FullName
+                                            </strong>
+
+                                            <div class="small text-muted">
+                                                @item.Employee.Department
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">
+                                                Employee not found
+                                            </span>
+                                        }
+
+                                    </td>
+
+
+                                    <!-- Month -->
+
+                                    <td>
+                                        @item.Month
+                                    </td>
+
+
+                                    <!-- Score -->
+
+                                    <td>
+
+                                        @if (item.Score >= 80)
+                                        {
+                                            <span class="badge bg-success">
+                                                @item.Score.ToString("0.##")%
+                                            </span>
+                                        }
+                                        else if (item.Score >= 60)
+                                        {
+                                            <span class="badge bg-warning text-dark">
+                                                @item.Score.ToString("0.##")%
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger">
+                                                @item.Score.ToString("0.##")%
+                                            </span>
+                                        }
+
+                                    </td>
+
+
+                                    <!-- Comments -->
+
+                                    <td>
+
+                                        @if (!string.IsNullOrWhiteSpace(item.Comments))
+                                        {
+                                            if (item.Comments.Length > 70)
+                                            {
+                                                @item.Comments.Substring(0, 70)
+
+                                                <span>
+                                                    ...
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                @item.Comments
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">
+                                                No comments
+                                            </span>
+                                        }
+
+                                    </td>
+
+
+                                    <!-- Actions -->
+
+                                    <td class="text-end performance-actions">
+
+                                        <a asp-action="Edit"
+                                           asp-route-id="@item.Id"
+                                           class="btn btn-sm btn-outline-primary">
+                                            Edit
+                                        </a>
+
+                                        <a asp-action="Delete"
+                                           asp-route-id="@item.Id"
+                                           class="btn btn-sm btn-outline-danger">
+                                            Delete
+                                        </a>
+
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+    }
+    else
+    {
+        <!-- Empty State -->
+
+        <div class="card shadow-sm performance-card">
+
+            <div class="card-body text-center py-5">
+
+                <h5 class="fw-bold">
+                    No performance records yet
+                </h5>
+
+                <p class="text-muted">
+                    Add a performance record to start tracking employee performance.
+                </p>
+
+                <a asp-action="Create"
+                   class="btn btn-primary">
+                    Add Performance
+                </a>
+
+            </div>
+
+        </div>
+    }
+
+</div>

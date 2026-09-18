@@ -1,0 +1,144 @@
+@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Sign In";
+}
+
+<div class="auth-page">
+
+    <div class="auth-card">
+
+        <!-- Brand -->
+        <div class="auth-brand">
+
+            <div class="auth-brand-icon">
+                WS
+            </div>
+
+            <div class="auth-brand-text">
+                <span class="auth-brand-name">WorkSphere</span>
+                <span class="auth-brand-subtitle">Employee Operations</span>
+            </div>
+
+        </div>
+
+
+        <!-- Heading -->
+        <div class="auth-heading">
+
+            <span class="auth-eyebrow">
+                EMPLOYEE OPERATIONS
+            </span>
+
+            <h1>Welcome back</h1>
+
+            <p>
+                Sign in to access your employee management system.
+            </p>
+
+        </div>
+
+
+        <!-- Login Form -->
+        <form id="account" method="post" class="auth-form">
+
+            <div asp-validation-summary="ModelOnly"
+                 class="auth-validation"
+                 role="alert">
+            </div>
+
+
+            <!-- Email -->
+            <div class="auth-field">
+
+                <label asp-for="Input.Email">
+                    Email address
+                </label>
+
+                <input asp-for="Input.Email"
+                       autocomplete="username"
+                       aria-required="true"
+                       placeholder="name@example.com" />
+
+                <span asp-validation-for="Input.Email"
+                      class="auth-error">
+                </span>
+
+            </div>
+
+
+            <!-- Password -->
+            <div class="auth-field">
+
+                <label asp-for="Input.Password">
+                    Password
+                </label>
+
+                <input asp-for="Input.Password"
+                       autocomplete="current-password"
+                       aria-required="true"
+                       placeholder="Enter your password" />
+
+                <span asp-validation-for="Input.Password"
+                      class="auth-error">
+                </span>
+
+            </div>
+
+
+            <!-- Remember / Forgot -->
+            <div class="auth-options">
+
+                <label class="remember-me">
+
+                    <input asp-for="Input.RememberMe" />
+
+                    <span>
+                        Remember me
+                    </span>
+
+                </label>
+
+                <a id="forgot-password"
+                   asp-page="./ForgotPassword">
+                    Forgot password?
+                </a>
+
+            </div>
+
+
+            <!-- Submit -->
+            <button id="login-submit"
+                    type="submit"
+                    class="auth-submit">
+
+                Sign In
+
+            </button>
+
+
+            <!-- Register -->
+            <div class="auth-register">
+
+                <span>Don't have an account?</span>
+
+                <a asp-page="./Register"
+                   asp-route-returnUrl="@Model.ReturnUrl">
+                    Create an account
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+}

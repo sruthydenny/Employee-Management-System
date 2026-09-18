@@ -1,0 +1,221 @@
+﻿@model EmployeeManagementSystem.Models.EmployeeTask
+
+@{
+    ViewData["Title"] = "Delete Task";
+}
+
+<div class="employees-page">
+
+    <!-- PAGE HEADER -->
+
+    <div class="employees-header">
+
+        <div>
+
+            <span class="eyebrow">
+                WORKFORCE OPERATIONS
+            </span>
+
+            <h1>
+                Delete Task
+            </h1>
+
+            <p>
+                Review the task before permanently deleting it.
+            </p>
+
+        </div>
+
+        <a asp-action="Index"
+           class="clear-button">
+            Back to Tasks
+        </a>
+
+    </div>
+
+
+    <!-- DELETE PANEL -->
+
+    <div class="employee-panel">
+
+        <div class="employee-panel-header">
+
+            <div>
+
+                <span class="panel-eyebrow">
+                    DELETE TASK
+                </span>
+
+                <h2>
+                    Confirm Deletion
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="employee-form-container">
+
+
+            <!-- WARNING -->
+
+            <div class="delete-warning">
+
+                <h3>
+                    Are you sure you want to delete this task?
+                </h3>
+
+                <p>
+                    This action cannot be undone.
+                </p>
+
+            </div>
+
+
+            <!-- TASK DETAILS -->
+
+            <div class="overview-content">
+
+
+                <div class="overview-item">
+
+                    <div class="overview-icon">
+                        ✓
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Task
+                        </strong>
+
+                        <span>
+                            @Model.Title
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="overview-item">
+
+                    <div class="overview-icon">
+                        👤
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Assigned Employee
+                        </strong>
+
+                        <span>
+
+                            @if (Model.Employee != null)
+                            {
+                                @Model.Employee.FullName
+                            }
+                            else
+                            {
+                                @:Not assigned
+                            }
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="overview-item">
+
+                    <div class="overview-icon">
+                        📅
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Due Date
+                        </strong>
+
+                        <span>
+
+                            @if (Model.DueDate.HasValue)
+                            {
+                                @Model.DueDate.Value.ToString("dd MMM yyyy")
+                            }
+                            else
+                            {
+                                @:No deadline
+                            }
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="overview-item">
+
+                    <div class="overview-icon">
+                        ●
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Status
+                        </strong>
+
+                        <span>
+                            @Model.Status
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- DELETE FORM -->
+
+            <form asp-action="Delete"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <input type="hidden"
+                       asp-for="Id" />
+
+
+                <div class="form-actions">
+
+                    <button type="submit"
+                            class="confirm-delete-button">
+
+                        Delete Task
+
+                    </button>
+
+
+                    <a asp-action="Index"
+                       class="clear-button">
+
+                        Cancel
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

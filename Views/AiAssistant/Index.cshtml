@@ -1,0 +1,378 @@
+﻿@{
+    ViewData["Title"] = "WorkSphere AI Assistant";
+}
+
+<div class="container-fluid">
+
+    <div class="row justify-content-center">
+
+        <div class="col-12 col-lg-9 col-xl-8">
+
+            <!-- Header -->
+            <div class="mb-4">
+                <h1 class="fw-bold mb-1">
+                    🤖 WorkSphere AI Assistant
+                </h1>
+
+                <p class="text-muted mb-0">
+                    Ask questions about using WorkSphere and its features.
+                </p>
+            </div>
+
+            <!-- Assistant Card -->
+            <div class="card shadow-sm border-0">
+
+                <!-- Chat Header -->
+                <div class="card-header bg-dark text-white p-3">
+                    <div class="d-flex align-items-center">
+
+                        <div class="me-3 fs-3">
+                            🤖
+                        </div>
+
+                        <div>
+                            <h5 class="mb-0">
+                                WorkSphere Assistant
+                            </h5>
+
+                            <small class="text-white-50">
+                                Online • Ready to help
+                            </small>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Chat Messages -->
+                <div id="chatMessages"
+                     class="p-4"
+                     style="height: 450px; overflow-y: auto; background: #f8f9fa;">
+
+                    <!-- Welcome message -->
+                    <div class="d-flex mb-3">
+
+                        <div class="bg-white border rounded-3 p-3 shadow-sm"
+                             style="max-width: 80%;">
+
+                            <strong class="d-block mb-1">
+                                WorkSphere Assistant
+                            </strong>
+
+                            <span>
+                                Hi! 👋 I'm the WorkSphere Assistant.
+                                You can ask me about dashboard features,
+                                tasks, company news, events, attendance,
+                                performance, or how to navigate WorkSphere.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Input Area -->
+                <div class="card-body border-top">
+
+                    <form id="assistantForm">
+
+                        @Html.AntiForgeryToken()
+
+                        <div class="input-group">
+
+                            <input type="text"
+                                   id="messageInput"
+                                   name="message"
+                                   class="form-control"
+                                   placeholder="Ask WorkSphere Assistant something..."
+                                   autocomplete="off" />
+
+                            <button type="submit"
+                                    id="askButton"
+                                    class="btn btn-dark px-4">
+                                Ask
+                            </button>
+
+                        </div>
+
+                        <div id="loadingMessage"
+                             class="text-muted small mt-2 d-none">
+                            🤖 Thinking...
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+            <!-- Example Questions -->
+            <div class="mt-4">
+
+                <h6 class="fw-bold">
+                    Try asking:
+                </h6>
+
+                <div class="d-flex flex-wrap gap-2">
+
+                    <button type="button"
+                            class="btn btn-outline-secondary btn-sm example-question">
+                        How do I use the dashboard?
+                    </button>
+
+                    <button type="button"
+                            class="btn btn-outline-secondary btn-sm example-question">
+                        What can I do with tasks?
+                    </button>
+
+                    <button type="button"
+                            class="btn btn-outline-secondary btn-sm example-question">
+                        What is the attendance section?
+                    </button>
+
+                    <button type="button"
+                            class="btn btn-outline-secondary btn-sm example-question">
+                        What information is shown in performance?
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <script>
+        const form = document.getElementById("assistantForm");
+        const input = document.getElementById("messageInput");
+        const chatMessages = document.getElementById("chatMessages");
+        const askButton = document.getElementById("askButton");
+        const loadingMessage = document.getElementById("loadingMessage");
+
+        function addMessage(sender, message, isUser) {
+
+            const wrapper = document.createElement("div");
+
+            wrapper.className = "d-flex mb-3";
+
+            if (isUser) {
+                wrapper.classList.add("justify-content-end");
+            }
+
+            const bubble = document.createElement("div");
+
+            bubble.className = isUser
+                ? "bg-dark text-white rounded-3 p-3 shadow-sm"
+                : "bg-white border rounded-3 p-3 shadow-sm";
+
+            bubble.style.maxWidth = "80%";
+
+            const senderElement = document.createElement("strong");
+
+            senderElement.className = "d-block mb-1";
+
+            senderElement.textContent = sender;
+
+            const messageElement = document.createElement("div");
+
+            messageElement.textContent = message;
+
+            bubble.appendChild(senderElement);
+            bubble.appendChild(messageElement);
+
+            wrapper.appendChild(bubble);
+
+            chatMessages.appendChild(wrapper);
+
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            return messageElement;
+        }
+
+        form.addEventListener("submit", async function(event) {
+
+            event.preventDefault();
+
+            const message = input.value.trim();
+
+            if (!message) {
+                return;
+            }
+
+            addMessage("You", message, true);
+
+            input.value = "";
+
+            askButton.disabled = true;
+            loadingMessage.classList.remove("d-none");
+
+            try {
+
+                const tokenElement = document.querySelector(
+                    'input[name="__RequestVerificationToken"]'
+                );
+
+                const token = tokenElement.value;
+
+                const formData = new FormData();
+
+                formData.append("message", message);
+                formData.append("__RequestVerificationToken", token);
+
+                const response = await fetch(
+                    '@Url.Action("Ask", "AiAssistant")',
+                    {
+                        method: "POST",
+                        body: formData
+                    }
+                );
+
+                if (!response.ok) {
+                    throw new Error("AI request failed.");
+                }
+
+                if (!response.body) {
+                    throw new Error("Streaming is not supported by this browser.");
+                }
+
+                /*
+                 * Create the assistant message immediately.
+                 * New text from Ollama will be appended to this element
+                 * as it arrives.
+                 */
+                const assistantMessage = addMessage(
+                    "WorkSphere Assistant",
+                    "",
+                    false
+                );
+
+                loadingMessage.textContent = "🤖 Generating...";
+
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+
+                let buffer = "";
+
+                while (true) {
+
+                    const { value, done } = await reader.read();
+
+                    if (done) {
+                        break;
+                    }
+
+                    buffer += decoder.decode(value, {
+                        stream: true
+                    });
+
+                    /*
+                     * The controller sends one JSON object per line.
+                     */
+                    const lines = buffer.split("\n");
+
+                    buffer = lines.pop();
+
+                    for (const line of lines) {
+
+                        if (!line.trim()) {
+                            continue;
+                        }
+
+                        try {
+
+                            const data = JSON.parse(line);
+
+                            if (data.response) {
+
+                                assistantMessage.textContent += data.response;
+
+                                chatMessages.scrollTop =
+                                    chatMessages.scrollHeight;
+                            }
+
+                            if (data.error) {
+
+                                assistantMessage.textContent +=
+                                    "\n" + data.error;
+                            }
+
+                        } catch (parseError) {
+
+                            console.warn(
+                                "Could not parse AI response chunk:",
+                                line
+                            );
+                        }
+                    }
+                }
+
+                /*
+                 * Process any remaining buffered data.
+                 */
+                if (buffer.trim()) {
+
+                    try {
+
+                        const data = JSON.parse(buffer);
+
+                        if (data.response) {
+
+                            assistantMessage.textContent += data.response;
+
+                        }
+
+                    } catch (parseError) {
+
+                        console.warn(
+                            "Could not parse final AI response chunk."
+                        );
+                    }
+                }
+
+                if (!assistantMessage.textContent.trim()) {
+
+                    assistantMessage.textContent =
+                        "I couldn't generate a response. Please try again.";
+                }
+
+            } catch (error) {
+
+                addMessage(
+                    "WorkSphere Assistant",
+                    "Sorry, something went wrong while contacting the assistant.",
+                    false
+                );
+
+                console.error(error);
+
+            } finally {
+
+                askButton.disabled = false;
+
+                loadingMessage.classList.add("d-none");
+                loadingMessage.textContent = "🤖 Thinking...";
+
+                input.focus();
+            }
+
+        });
+
+        document.querySelectorAll(".example-question")
+            .forEach(function(button) {
+
+                button.addEventListener("click", function() {
+
+                    input.value = button.textContent.trim();
+
+                    input.focus();
+
+                });
+
+            });
+    </script>
+}

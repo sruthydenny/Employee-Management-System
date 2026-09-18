@@ -1,0 +1,351 @@
+﻿@model IEnumerable<EmployeeManagementSystem.Models.EmployeeTask>
+
+@{
+    ViewData["Title"] = "Task Management";
+}
+
+<div class="employees-page">
+
+    <!-- =====================================================
+         PAGE HEADER
+    ====================================================== -->
+
+    <div class="employees-header">
+
+        <div>
+
+            <span class="eyebrow">
+                WORKFORCE OPERATIONS
+            </span>
+
+            <h1>
+                Task Management
+            </h1>
+
+            <p>
+                Create, assign and monitor employee tasks.
+            </p>
+
+        </div>
+
+
+        <a asp-action="Create"
+           class="employee-add-button">
+
+            <span>+</span>
+            Create Task
+
+        </a>
+
+    </div>
+
+
+    <!-- =====================================================
+         TASK MANAGEMENT PANEL
+    ====================================================== -->
+
+    <div class="employee-panel">
+
+
+        <!-- PANEL HEADER -->
+
+        <div class="employee-panel-header">
+
+            <div>
+
+                <span class="panel-eyebrow">
+                    EMPLOYEE TASKS
+                </span>
+
+                <h2>
+                    Task Records
+                </h2>
+
+            </div>
+
+
+            <div class="employee-count">
+
+                @Model.Count()
+                @(Model.Count() == 1 ? "Task" : "Tasks")
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             SUCCESS MESSAGE
+        ================================================== -->
+        @if (TempData["Success"] != null)
+        {
+            <div class="users-success">
+
+                @TempData["Success"]
+
+            </div>
+        }
+
+
+        <!-- =================================================
+             TASK TABLE
+        ================================================== -->
+
+        <div class="employee-table-wrapper">
+
+            <table class="employee-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            TASK
+                        </th>
+
+                        <th>
+                            EMPLOYEE
+                        </th>
+
+                        <th>
+                            STATUS
+                        </th>
+
+                        <th>
+                            DUE DATE
+                        </th>
+
+                        <th>
+                            CREATED
+                        </th>
+
+                        <th class="actions-column">
+                            ACTIONS
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    @if (Model.Any())
+                    {
+
+                        @foreach (var task in Model)
+                        {
+
+                            <tr>
+
+
+                                <!-- TASK -->
+
+                                <td>
+
+                                    <div class="employee-info">
+
+                                        <div class="employee-avatar">
+                                            ✓
+                                        </div>
+
+                                        <div>
+
+                                            <strong>
+                                                @task.Title
+                                            </strong>
+
+                                            <span>
+                                                @task.Description
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+
+                                <!-- EMPLOYEE -->
+
+                                <td>
+
+                                    @if (task.Employee != null)
+                                    {
+
+                                        <div class="assigned-employee">
+
+                                            <strong>
+                                                @task.Employee.FullName
+                                            </strong>
+
+                                            <span>
+                                                Employee #@task.EmployeeId
+                                            </span>
+
+                                        </div>
+
+                                    }
+                                    else
+                                    {
+
+                                        <span class="unassigned-employee">
+                                            Not assigned
+                                        </span>
+
+                                    }
+
+                                </td>
+
+
+                                <!-- STATUS -->
+
+                                <td>
+
+                                    @if (task.Status == "Completed")
+                                    {
+
+                                        <span class="role-badge admin-role">
+                                            Completed
+                                        </span>
+
+                                    }
+                                    else
+                                    {
+
+                                        <span class="role-badge user-role">
+                                            Pending
+                                        </span>
+
+                                    }
+
+                                </td>
+
+
+                                <!-- DUE DATE -->
+
+                                <td>
+
+                                    @if (task.DueDate.HasValue)
+                                    {
+
+                                        <span class="hire-date">
+
+                                            @task.DueDate.Value
+                                            .ToString("dd MMM yyyy")
+
+                                        </span>
+
+                                    }
+                                    else
+                                    {
+
+                                        <span class="unassigned-employee">
+                                            No deadline
+                                        </span>
+
+                                    }
+
+                                </td>
+
+
+                                <!-- CREATED DATE -->
+
+                                <td>
+
+                                    <span class="hire-date">
+
+                                        @task.CreatedDate
+                                        .ToString("dd MMM yyyy")
+
+                                    </span>
+
+                                </td>
+
+
+                                <!-- ACTIONS -->
+
+                                <td class="actions-column">
+
+                                    <div class="employee-actions">
+
+
+                                        <a asp-action="Edit"
+                                           asp-route-id="@task.Id"
+                                           class="table-action edit-action"
+                                           title="Edit task">
+
+                                            Edit
+
+                                        </a>
+
+
+                                        <a asp-action="Delete"
+                                           asp-route-id="@task.Id"
+                                           class="table-action delete-action"
+                                           title="Delete task">
+
+                                            Delete
+
+                                        </a>
+
+                                    </div>
+
+                                </td>
+
+
+                            </tr>
+
+                        }
+
+                    }
+                    else
+                    {
+
+                        <!-- EMPTY STATE -->
+
+                        <tr>
+
+                            <td colspan="6">
+
+                                <div class="empty-state">
+
+                                    <div class="empty-icon">
+                                        ✓
+                                    </div>
+
+                                    <h3>
+                                        No tasks found
+                                    </h3>
+
+                                    <p>
+                                        Create a task and assign it
+                                        to an employee.
+                                    </p>
+
+
+                                    <a asp-action="Create"
+                                       class="employee-add-button">
+
+                                        <span>+</span>
+                                        Create Task
+
+                                    </a>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

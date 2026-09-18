@@ -1,0 +1,105 @@
+﻿@model IEnumerable<EmployeeManagementSystem.Models.Employee>
+
+@{
+    ViewData["Title"] = "Assign Employee";
+
+    var userEmail = ViewBag.UserEmail as string;
+    var userId = ViewBag.UserId as string;
+    var currentEmployeeId = ViewBag.CurrentEmployeeId as int?;
+}
+
+<div class="users-page">
+
+    <div class="users-header">
+        <div>
+            <span class="eyebrow">SYSTEM ADMINISTRATION</span>
+
+            <h1>Assign Employee</h1>
+
+            <p>
+                Assign an employee profile to a user account.
+            </p>
+        </div>
+    </div>
+
+
+    <div class="users-card">
+
+        <div class="users-card-header">
+            <div>
+                <h2>User Account</h2>
+
+                <p>
+                    @userEmail
+                </p>
+            </div>
+        </div>
+
+
+        <form asp-action="AssignEmployee"
+              method="post">
+
+            @Html.AntiForgeryToken()
+
+            <input type="hidden"
+                   name="id"
+                   value="@userId" />
+
+
+            <div class="mb-4">
+
+                <label class="form-label">
+                    Employee Profile
+                </label>
+
+                <select name="employeeId"
+                        class="form-select">
+
+                    <option value="">
+                        -- No employee assigned --
+                    </option>
+
+                    @foreach (var employee in Model)
+                    {
+                        if (currentEmployeeId == employee.Id)
+                        {
+                            <option value="@employee.Id"
+                                    selected>
+                                @employee.FullName
+                                (@employee.Email)
+                            </option>
+                        }
+                        else
+                        {
+                            <option value="@employee.Id">
+                                @employee.FullName
+                                (@employee.Email)
+                            </option>
+                        }
+                    }
+
+                </select>
+
+                <div class="form-text">
+                    The selected employee will become this user's
+                    employee profile.
+                </div>
+
+            </div>
+
+
+            <button type="submit"
+                    class="employee-add-button">
+                Save Assignment
+            </button>
+
+            <a asp-action="Index"
+               class="clear-button">
+                Cancel
+            </a>
+
+        </form>
+
+    </div>
+
+</div>

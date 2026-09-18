@@ -1,0 +1,145 @@
+@page
+@model RegisterModel
+
+@{
+    Layout = "/Views/Shared/_AuthLayout.cshtml";
+    ViewData["Title"] = "Register";
+}
+
+<div class="auth-card register-card">
+
+    <!-- Brand -->
+    <div class="register-brand">
+        WorkSphere
+    </div>
+
+
+    <!-- Heading -->
+    <div class="register-heading">
+
+        <p>
+            Create your account to get started.
+        </p>
+
+    </div>
+
+
+    <!-- Register Form -->
+    <form id="registerForm"
+          asp-route-returnUrl="@Model.ReturnUrl"
+          method="post"
+          class="register-form">
+
+        <div asp-validation-summary="ModelOnly"
+             class="auth-validation"
+             role="alert">
+        </div>
+
+
+        <!-- Email -->
+
+        <div class="register-field">
+
+            <label asp-for="Input.Email">
+                Email address
+            </label>
+
+            <input asp-for="Input.Email"
+                   autocomplete="username"
+                   aria-required="true"
+                   placeholder="name@example.com" />
+
+            <span asp-validation-for="Input.Email"
+                  class="auth-error">
+            </span>
+
+        </div>
+
+
+        <!-- Password -->
+
+        <div class="register-field">
+
+            <label asp-for="Input.Password">
+                Password
+            </label>
+
+            <input asp-for="Input.Password"
+                   autocomplete="new-password"
+                   aria-required="true"
+                   placeholder="Enter your password" />
+
+            <span asp-validation-for="Input.Password"
+                  class="auth-error">
+            </span>
+
+        </div>
+
+
+        <!-- Confirm Password -->
+
+        <div class="register-field">
+
+            <label asp-for="Input.ConfirmPassword">
+                Confirm password
+            </label>
+
+            <input asp-for="Input.ConfirmPassword"
+                   autocomplete="new-password"
+                   aria-required="true"
+                   placeholder="Confirm your password" />
+
+            <span asp-validation-for="Input.ConfirmPassword"
+                  class="auth-error">
+            </span>
+
+        </div>
+
+
+        <!-- Register Button -->
+
+        <button id="registerSubmit"
+                type="submit"
+                class="auth-submit">
+
+            Register
+
+        </button>
+
+
+        <!-- Login -->
+
+        <div class="register-login">
+
+            <span>
+                Already have an account?
+            </span>
+
+            <a asp-page="./Login"
+               asp-route-returnUrl="@Model.ReturnUrl">
+
+                Sign in
+
+            </a>
+
+        </div>
+
+    </form>
+
+
+    <!-- Footer -->
+
+    <div class="register-footer">
+
+        © 2026 WorkSphere
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+}

@@ -1,0 +1,885 @@
+﻿@model EmployeeManagementSystem.Models.UserDashboardViewModel
+
+@{
+    ViewData["Title"] = "My Dashboard";
+
+    var totalTasks = Model.PendingTasks + Model.CompletedTasks;
+
+    var taskProgress = totalTasks > 0
+        ? (Model.CompletedTasks * 100.0 / totalTasks)
+        : 0;
+}
+
+<div class="dashboard">
+
+    <!-- ===================================================== -->
+    <!-- HEADER -->
+    <!-- ===================================================== -->
+
+    <div class="dashboard-header">
+
+        <div>
+
+            <span class="eyebrow">
+                EMPLOYEE PORTAL
+            </span>
+
+            <h1>
+                Welcome, @Model.FullName 👋
+            </h1>
+
+            <p>
+                Here's your personal overview and current work activity.
+            </p>
+
+        </div>
+
+        <div class="dashboard-date">
+
+            <span>
+                Department
+            </span>
+
+            <strong>
+                @Model.Department
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- QUICK STATISTICS -->
+    <!-- ===================================================== -->
+
+    <div class="stats-grid">
+
+        <!-- Pending Tasks -->
+
+        <div class="stat-card">
+
+            <div class="stat-card-top">
+
+                <div class="stat-icon orange">
+                    <span>⏰</span>
+                </div>
+
+                <span class="stat-label">
+                    TASKS
+                </span>
+
+            </div>
+
+            <div class="stat-value">
+                @Model.PendingTasks
+            </div>
+
+            <div class="stat-description">
+                Pending tasks
+            </div>
+
+        </div>
+
+
+        <!-- Completed Tasks -->
+
+        <div class="stat-card">
+
+            <div class="stat-card-top">
+
+                <div class="stat-icon green">
+                    <span>✓</span>
+                </div>
+
+                <span class="stat-label">
+                    COMPLETED
+                </span>
+
+            </div>
+
+            <div class="stat-value">
+                @Model.CompletedTasks
+            </div>
+
+            <div class="stat-description">
+                Completed tasks
+            </div>
+
+        </div>
+
+
+        <!-- Attendance -->
+
+        <div class="stat-card">
+
+            <div class="stat-card-top">
+
+                <div class="stat-icon purple">
+                    <span>📊</span>
+                </div>
+
+                <span class="stat-label">
+                    ATTENDANCE
+                </span>
+
+            </div>
+
+            <div class="stat-value">
+                @Model.AttendancePercentage.ToString("0")%
+            </div>
+
+            <div class="stat-description">
+                Attendance percentage
+            </div>
+
+        </div>
+
+
+        <!-- Performance -->
+
+        <div class="stat-card">
+
+            <div class="stat-card-top">
+
+                <div class="stat-icon orange">
+                    <span>⭐</span>
+                </div>
+
+                <span class="stat-label">
+                    PERFORMANCE
+                </span>
+
+            </div>
+
+            <div class="stat-value">
+                @Model.PerformancePercentage.ToString("0")%
+            </div>
+
+            <div class="stat-description">
+                Current performance
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- MAIN DASHBOARD GRID -->
+    <!-- ===================================================== -->
+
+    <div class="dashboard-grid">
+
+
+        <!-- ================================================= -->
+        <!-- MY PROFILE -->
+        <!-- ================================================= -->
+
+        <div class="dashboard-panel overview-panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <span class="panel-eyebrow">
+                        MY PROFILE
+                    </span>
+
+                    <h2>
+                        Employee Information
+                    </h2>
+
+                </div>
+
+                <span class="status-badge">
+
+                    <span class="status-dot"></span>
+
+                    Active
+
+                </span>
+
+            </div>
+
+
+            <div class="overview-content">
+
+                <div class="overview-item">
+
+                    <div class="overview-icon">
+                        👤
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Full Name
+                        </strong>
+
+                        <span>
+                            @Model.FullName
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="overview-item">
+
+                    <div class="overview-icon">
+                        ✉
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Email
+                        </strong>
+
+                        <span>
+                            @Model.Email
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="overview-item">
+
+                    <div class="overview-icon">
+                        🏢
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Department
+                        </strong>
+
+                        <span>
+                            @Model.Department
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="overview-item">
+
+                    <div class="overview-icon">
+                        💼
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Position
+                        </strong>
+
+                        <span>
+                            @Model.Position
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="overview-item">
+
+                    <div class="overview-icon">
+                        📅
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Hire Date
+                        </strong>
+
+                        <span>
+                            @Model.HireDate.ToString("dd MMM yyyy")
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- TASK PROGRESS -->
+        <!-- ================================================= -->
+
+        <div class="dashboard-panel actions-panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <span class="panel-eyebrow">
+                        WORK PROGRESS
+                    </span>
+
+                    <h2>
+                        Task Progress
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="overview-content">
+
+                <div class="overview-item">
+
+                    <div class="overview-icon">
+                        📋
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Total Tasks
+                        </strong>
+
+                        <span>
+                            @totalTasks tasks
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="overview-item">
+
+                    <div class="overview-icon">
+                        ⏰
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Pending
+                        </strong>
+
+                        <span>
+                            @Model.PendingTasks tasks remaining
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="overview-item">
+
+                    <div class="overview-icon">
+                        ✓
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Completed
+                        </strong>
+
+                        <span>
+                            @Model.CompletedTasks tasks completed
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div style="margin-top:20px;">
+
+                    <div style="
+                        display:flex;
+                        justify-content:space-between;
+                        margin-bottom:8px;">
+
+                        <strong>
+                            Completion
+                        </strong>
+
+                        <span>
+                            @taskProgress.ToString("0")%
+                        </span>
+
+                    </div>
+
+
+                    <div style="
+                        width:100%;
+                        height:10px;
+                        background:#e5e7eb;
+                        border-radius:10px;
+                        overflow:hidden;">
+
+                        <div style="
+                            width:@taskProgress%;
+                            height:100%;
+                            background:currentColor;
+                            border-radius:10px;">
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- MY TASKS -->
+    <!-- ===================================================== -->
+
+    <div class="dashboard-panel"
+         style="margin-top:24px;">
+
+        <div class="panel-header">
+
+            <div>
+
+                <span class="panel-eyebrow">
+                    MY WORK
+                </span>
+
+                <h2>
+                    My Tasks
+                </h2>
+
+            </div>
+
+            <span class="status-badge">
+
+                @Model.PendingTasks Pending
+
+            </span>
+
+        </div>
+
+
+        <div class="quick-actions">
+
+            @if (Model.Tasks != null && Model.Tasks.Any())
+            {
+
+                @foreach (var task in Model.Tasks)
+                {
+
+                    <div class="action-card">
+
+                        <div class="action-icon secondary-icon">
+                            ✓
+                        </div>
+
+
+                        <div style="flex:1;">
+
+                            <strong>
+                                @task.Title
+                            </strong>
+
+                            <span>
+                                @task.Description
+                            </span>
+
+
+                            @if (task.DueDate.HasValue)
+                            {
+                                <span>
+                                    Due:
+                                    @task.DueDate.Value.ToString("dd MMM yyyy")
+                                </span>
+                            }
+
+
+                            <span>
+                                Status:
+                                @task.Status
+                            </span>
+
+                        </div>
+
+
+                        @if (task.Status != "Completed")
+                        {
+
+                            <form asp-controller="Tasks"
+                                  asp-action="Complete"
+                                  asp-route-id="@task.Id"
+                                  method="post">
+
+                                @Html.AntiForgeryToken()
+
+                                <button type="submit"
+                                        class="filter-button">
+
+                                    Complete
+
+                                </button>
+
+                            </form>
+
+                        }
+                        else
+                        {
+
+                            <span class="role-badge admin-role">
+                                Completed
+                            </span>
+
+                        }
+
+                    </div>
+
+                }
+
+            }
+            else
+            {
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        ✓
+                    </div>
+
+                    <h3>
+                        No tasks assigned
+                    </h3>
+
+                    <p>
+                        You currently have no tasks assigned to you.
+                    </p>
+
+                </div>
+
+            }
+
+        </div>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- NEWS + EVENTS -->
+    <!-- ===================================================== -->
+
+    <div class="dashboard-grid"
+         style="margin-top:24px;">
+
+
+        <!-- COMPANY NEWS -->
+
+        <div class="dashboard-panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <span class="panel-eyebrow">
+                        COMPANY NEWS
+                    </span>
+
+                    <h2>
+                        Latest News
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            @if (Model.News != null && Model.News.Any())
+            {
+
+                <div class="overview-content">
+
+                    @foreach (var news in Model.News)
+                    {
+
+                        <div class="overview-item">
+
+                            <div class="overview-icon">
+
+                                @(news.IsImportant ? "!" : "📰")
+
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    @news.Title
+                                </strong>
+
+                                <span>
+                                    @news.Content
+                                </span>
+
+                                <span>
+                                    @news.PublishedDate.ToString("dd MMM yyyy")
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    }
+
+                </div>
+
+            }
+            else
+            {
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        📰
+                    </div>
+
+                    <h3>
+                        No news available
+                    </h3>
+
+                    <p>
+                        There are no company announcements at the moment.
+                    </p>
+
+                </div>
+
+            }
+
+        </div>
+
+
+        <!-- UPCOMING EVENTS -->
+
+        <div class="dashboard-panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <span class="panel-eyebrow">
+                        COMPANY EVENTS
+                    </span>
+
+                    <h2>
+                        Upcoming Events
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            @if (Model.UpcomingEvents != null &&
+                 Model.UpcomingEvents.Any())
+            {
+
+                <div class="overview-content">
+
+                    @foreach (var item in Model.UpcomingEvents)
+                    {
+
+                        <div class="overview-item">
+
+                            <div class="overview-icon">
+                                📅
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    @item.Title
+                                </strong>
+
+                                <span>
+                                    @item.Description
+                                </span>
+
+                                <span>
+                                    @item.EventDate.ToString("dd MMM yyyy HH:mm")
+                                </span>
+
+                                <span>
+                                    @item.Location
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    }
+
+                </div>
+
+            }
+            else
+            {
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        📅
+                    </div>
+
+                    <h3>
+                        No upcoming events
+                    </h3>
+
+                    <p>
+                        There are currently no upcoming company events.
+                    </p>
+
+                </div>
+
+            }
+
+        </div>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- PERFORMANCE -->
+    <!-- ===================================================== -->
+
+    <div class="dashboard-panel"
+         style="margin-top:24px;">
+
+        <div class="panel-header">
+
+            <div>
+
+                <span class="panel-eyebrow">
+                    PERFORMANCE
+                </span>
+
+                <h2>
+                    Performance History
+                </h2>
+
+            </div>
+
+            <span class="status-badge">
+                @Model.PerformancePercentage.ToString("0")%
+            </span>
+
+        </div>
+
+
+        @if (Model.PerformanceHistory != null &&
+             Model.PerformanceHistory.Any())
+        {
+
+            <div class="overview-content">
+
+                @foreach (var performance in Model.PerformanceHistory)
+                {
+
+                    <div class="overview-item">
+
+                        <div class="overview-icon">
+                            ⭐
+                        </div>
+
+                        <div style="flex:1;">
+
+                            <strong>
+                                @performance.Month
+                            </strong>
+
+                            <span>
+                                Score:
+                                @performance.Score.ToString("0")%
+                            </span>
+
+                            @if (!string.IsNullOrWhiteSpace(
+                                performance.Comments))
+                            {
+                                <span>
+                                    @performance.Comments
+                                </span>
+                            }
+
+                        </div>
+
+                    </div>
+
+                }
+
+            </div>
+
+        }
+        else
+        {
+
+            <div class="empty-state">
+
+                <div class="empty-icon">
+                    ⭐
+                </div>
+
+                <h3>
+                    No performance records
+                </h3>
+
+                <p>
+                    Performance information will appear here when available.
+                </p>
+
+            </div>
+
+        }
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- ATTENDANCE -->
+    <!-- ===================================================== -->
+
+    <div class="insight-banner"
+         style="margin-top:24px;">
+
+        <div class="insight-icon">
+            📊
+        </div>
+
+        <div>
+
+            <strong>
+                Attendance Overview
+            </strong>
+
+            <p>
+                Your current attendance percentage is
+                <strong>
+                    @Model.AttendancePercentage.ToString("0")%
+                </strong>.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>

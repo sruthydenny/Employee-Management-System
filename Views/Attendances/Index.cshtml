@@ -1,0 +1,446 @@
+﻿@model IEnumerable<EmployeeManagementSystem.Models.Attendance>
+
+@{
+    ViewData["Title"] = "Attendance";
+
+    var selectedDate = ViewBag.SelectedDate != null
+        ? (DateTime)ViewBag.SelectedDate
+        : DateTime.Today;
+
+    var attendanceList = Model?.ToList()
+        ?? new List<EmployeeManagementSystem.Models.Attendance>();
+
+    var presentCount = attendanceList.Count(a => a.IsPresent && !a.IsLate);
+    var lateCount = attendanceList.Count(a => a.IsPresent && a.IsLate);
+    var absentCount = attendanceList.Count(a => !a.IsPresent);
+
+    var totalEmployees = attendanceList.Count;
+
+    var attendancePercentage = totalEmployees > 0
+        ? Math.Round(
+            ((double)(presentCount + lateCount) / totalEmployees) * 100,
+            1)
+        : 0;
+}
+
+<div class="container-fluid mt-4">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold mb-1">
+                Attendance
+            </h2>
+
+            <p class="text-muted mb-0">
+                Manage daily employee attendance.
+            </p>
+        </div>
+
+    </div>
+
+
+    <!-- Date Selector -->
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-body">
+
+            <form asp-action="Index"
+                  method="get"
+                  class="row g-3 align-items-end">
+
+                <div class="col-12 col-md-4">
+
+                    <label class="form-label fw-semibold">
+                        Attendance Date
+                    </label>
+
+                    <input type="date"
+                           name="date"
+                           value="@selectedDate.ToString("yyyy-MM-dd")"
+                           class="form-control" />
+
+                </div>
+
+                <div class="col-12 col-md-auto">
+
+                    <button type="submit"
+                            class="btn btn-primary">
+                        View Date
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show"
+             role="alert">
+
+            @TempData["SuccessMessage"]
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert">
+            </button>
+
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show"
+             role="alert">
+
+            @TempData["ErrorMessage"]
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert">
+            </button>
+
+        </div>
+    }
+
+
+    @if (attendanceList.Any())
+    {
+        <!-- Summary -->
+        <div class="row g-3 mb-4">
+
+            <div class="col-6 col-lg-3">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-body">
+                        <small class="text-muted">
+                            Total Employees
+                        </small>
+
+                        <h3 class="fw-bold mb-0">
+                            @totalEmployees
+                        </h3>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-6 col-lg-3">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-body">
+                        <small class="text-muted">
+                            Present
+                        </small>
+
+                        <h3 class="fw-bold text-success mb-0">
+                            @presentCount
+                        </h3>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-6 col-lg-3">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-body">
+                        <small class="text-muted">
+                            Late
+                        </small>
+
+                        <h3 class="fw-bold text-warning mb-0">
+                            @lateCount
+                        </h3>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-6 col-lg-3">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-body">
+                        <small class="text-muted">
+                            Absent
+                        </small>
+
+                        <h3 class="fw-bold text-danger mb-0">
+                            @absentCount
+                        </h3>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- Attendance Form -->
+        <form asp-action="SaveDaily"
+              method="post">
+
+            @Html.AntiForgeryToken()
+
+            <input type="hidden"
+                   name="date"
+                   value="@selectedDate.ToString("yyyy-MM-dd")" />
+
+
+            <div class="card shadow-sm border-0">
+
+                <!-- Card Header -->
+                <div class="card-header border-0 py-3">
+
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+                        <div>
+                            <h5 class="fw-bold mb-1">
+                                Daily Attendance
+                            </h5>
+
+                            <span class="text-muted">
+                                @selectedDate.ToString("dddd, dd MMMM yyyy")
+                            </span>
+                        </div>
+
+                        <div class="d-flex gap-2">
+
+                            <button type="button"
+                                    id="markAllPresent"
+                                    class="btn btn-outline-success">
+                                ✓ Mark All Present
+                            </button>
+
+                            <button type="submit"
+                                    class="btn btn-primary">
+                                Save Attendance
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Table -->
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle mb-0 attendance-table">
+
+                        <thead>
+                            <tr>
+
+                                <th class="px-4">
+                                    Employee
+                                </th>
+
+                                <th>
+                                    Department
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                            </tr>
+                        </thead>
+
+
+                        <tbody>
+
+                            @for (int i = 0; i < attendanceList.Count; i++)
+                            {
+                                var item = attendanceList[i];
+
+                                string currentStatus;
+
+                                if (!item.IsPresent)
+                                {
+                                    currentStatus = "Absent";
+                                }
+                                else if (item.IsLate)
+                                {
+                                    currentStatus = "Late";
+                                }
+                                else
+                                {
+                                    currentStatus = "Present";
+                                }
+
+
+                                <tr>
+
+                                    <!-- Hidden Employee ID -->
+                                    <input type="hidden"
+                                           name="employeeIds"
+                                           value="@item.EmployeeId" />
+
+
+                                    <!-- Employee -->
+                                    <td class="px-4">
+
+                                        @if (item.Employee != null)
+                                        {
+                                            <div class="fw-semibold">
+                                                @item.Employee.FullName
+                                            </div>
+
+                                            @if (!string.IsNullOrWhiteSpace(item.Employee.Email))
+                                            {
+                                                <div class="small text-muted">
+                                                    @item.Employee.Email
+                                                </div>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">
+                                                Employee not found
+                                            </span>
+                                        }
+
+                                    </td>
+
+
+                                    <!-- Department -->
+                                    <td>
+
+                                        @if (item.Employee != null)
+                                        {
+                                            <span class="text-muted">
+                                                @item.Employee.Department
+                                            </span>
+                                        }
+
+                                    </td>
+
+
+                                    <!-- Status -->
+                                    <td>
+
+                                        <div class="attendance-status-group">
+
+                                            <input type="radio"
+                                                   class="btn-check attendance-status"
+                                                   name="statuses[@i]"
+                                                   id="present-@item.EmployeeId"
+                                                   value="Present"
+                                                   autocomplete="off"
+                                                   @(currentStatus == "Present" ? "checked" : "") />
+
+                                            <label class="btn btn-outline-success btn-sm"
+                                                   for="present-@item.EmployeeId">
+                                                Present
+                                            </label>
+
+
+                                            <input type="radio"
+                                                   class="btn-check attendance-status"
+                                                   name="statuses[@i]"
+                                                   id="late-@item.EmployeeId"
+                                                   value="Late"
+                                                   autocomplete="off"
+                                                   @(currentStatus == "Late" ? "checked" : "") />
+
+                                            <label class="btn btn-outline-warning btn-sm"
+                                                   for="late-@item.EmployeeId">
+                                                Late
+                                            </label>
+
+
+                                            <input type="radio"
+                                                   class="btn-check attendance-status"
+                                                   name="statuses[@i]"
+                                                   id="absent-@item.EmployeeId"
+                                                   value="Absent"
+                                                   autocomplete="off"
+                                                   @(currentStatus == "Absent" ? "checked" : "") />
+
+                                            <label class="btn btn-outline-danger btn-sm"
+                                                   for="absent-@item.EmployeeId">
+                                                Absent
+                                            </label>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <!-- Bottom Save -->
+                <div class="card-footer border-0 p-3">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <span class="text-muted small">
+                            Select the attendance status for each employee.
+                        </span>
+
+                        <button type="submit"
+                                class="btn btn-primary">
+                            Save Attendance
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </form>
+    }
+    else
+    {
+        <div class="card shadow-sm border-0">
+
+            <div class="card-body text-center py-5">
+
+                <h5 class="fw-bold">
+                    No employees found
+                </h5>
+
+                <p class="text-muted mb-0">
+                    Add employees before managing attendance.
+                </p>
+
+            </div>
+
+        </div>
+    }
+
+</div>
+
+
+@section Scripts {
+
+    <script>
+
+        document
+            .getElementById("markAllPresent")
+            ?.addEventListener("click", function () {
+
+                document
+                    .querySelectorAll(
+                        'input[type="radio"][value="Present"]'
+                    )
+                    .forEach(function (radio) {
+
+                        radio.checked = true;
+
+                    });
+
+            });
+
+    </script>
+}

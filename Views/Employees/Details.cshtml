@@ -1,45 +1,198 @@
 @model EmployeeManagementSystem.Models.Employee
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Employee Details";
 }
 
-<h1>Details</h1>
+<div class="employee-details-page">
 
-<div>
-    <h4>Employee</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FullName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FullName)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Department)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Department)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Salary)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Salary)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <!-- Header -->
+    <div class="details-header">
+
+        <div>
+            <span class="eyebrow">EMPLOYEE PROFILE</span>
+
+            <h1>Employee Details</h1>
+
+            <p>
+                View employee information and workforce details.
+            </p>
+        </div>
+
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-action="Index" class="back-button">
+                ← Back to Employees
+            </a>
+        }
+        else
+        {
+            <a asp-controller="Home"
+               asp-action="Index"
+               class="back-button">
+                ← Back to Dashboard
+            </a>
+        }
+
+    </div>
+
+
+    @if (Model != null)
+    {
+        <!-- Profile Card -->
+        <div class="details-card">
+
+            <div class="details-profile-header">
+
+                <div class="details-avatar">
+                    @(string.IsNullOrWhiteSpace(Model.FullName)
+                        ? "?"
+                        : Model.FullName.Substring(0, 1).ToUpper())
+                </div>
+
+                <div>
+                    <h2>@Model.FullName</h2>
+                    <p>@Model.Position</p>
+                </div>
+
+            </div>
+
+
+            <!-- Employee Information -->
+            <div class="details-section">
+
+                <div class="details-section-title">
+                    EMPLOYEE INFORMATION
+                </div>
+
+                <div class="details-grid">
+
+                    <div class="details-field">
+                        <span class="details-label">
+                            Full Name
+                        </span>
+
+                        <strong>
+                            @Model.FullName
+                        </strong>
+                    </div>
+
+
+                    <div class="details-field">
+                        <span class="details-label">
+                            Email Address
+                        </span>
+
+                        <strong>
+                            @Model.Email
+                        </strong>
+                    </div>
+
+
+                    <div class="details-field">
+                        <span class="details-label">
+                            Department
+                        </span>
+
+                        <span class="department-badge">
+                            @Model.Department
+                        </span>
+                    </div>
+
+
+                    <div class="details-field">
+                        <span class="details-label">
+                            Job Position
+                        </span>
+
+                        <strong>
+                            @Model.Position
+                        </strong>
+                    </div>
+
+
+                    <div class="details-field">
+                        <span class="details-label">
+                            Salary
+                        </span>
+
+                        <strong class="details-salary">
+                            €@Model.Salary.ToString("N2")
+                        </strong>
+                    </div>
+
+
+                    <div class="details-field">
+                        <span class="details-label">
+                            Hire Date
+                        </span>
+
+                        <strong>
+                            @Model.HireDate.ToString("dd MMM yyyy")
+                        </strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Actions -->
+            <div class="details-actions">
+
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-action="Index"
+                       class="cancel-button">
+                        Back to Employees
+                    </a>
+
+                    <a asp-action="Edit"
+                       asp-route-id="@Model.Id"
+                       class="save-button">
+                        Edit Employee
+                    </a>
+                }
+                else
+                {
+                    <a asp-controller="Home"
+                       asp-action="Index"
+                       class="save-button">
+                        Back to Dashboard
+                    </a>
+                }
+
+            </div>
+
+        </div>
+    }
+    else
+    {
+        <!-- No Profile -->
+        <div class="details-card">
+
+            <div class="empty-state">
+
+                <div class="empty-icon">
+                    👤
+                </div>
+
+                <h3>No Employee Profile Assigned</h3>
+
+                <p>
+                    There is currently no employee profile associated
+                    with your account. Please contact an administrator.
+                </p>
+
+                <a asp-controller="Home"
+                   asp-action="Index"
+                   class="save-button">
+                    Back to Dashboard
+                </a>
+
+            </div>
+
+        </div>
+    }
+
 </div>

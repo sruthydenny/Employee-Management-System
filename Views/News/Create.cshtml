@@ -1,0 +1,128 @@
+﻿@model EmployeeManagementSystem.Models.News
+
+@{
+    ViewData["Title"] = "Create News";
+}
+
+<div class="employees-page">
+
+    <div class="employees-header">
+
+        <div>
+            <span class="eyebrow">COMPANY COMMUNICATIONS</span>
+
+            <h1>Create News</h1>
+
+            <p>
+                Publish a new company announcement.
+            </p>
+        </div>
+
+        <a asp-action="Index"
+           class="clear-button">
+            Back to News
+        </a>
+
+    </div>
+
+
+    <div class="employee-panel">
+
+        <div class="employee-panel-header">
+
+            <div>
+                <span class="panel-eyebrow">NEW ANNOUNCEMENT</span>
+
+                <h2>News Information</h2>
+            </div>
+
+        </div>
+
+
+        <div class="employee-form-container">
+
+            <form asp-action="Create" method="post">
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger">
+                </div>
+
+
+                <div class="form-group">
+
+                    <label asp-for="Title">
+                        Title
+                    </label>
+
+                    <input asp-for="Title"
+                           class="form-control"
+                           placeholder="Enter news title..." />
+
+                    <span asp-validation-for="Title"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label asp-for="Content">
+                        Content
+                    </label>
+
+                    <textarea asp-for="Content"
+                              class="form-control"
+                              rows="7"
+                              placeholder="Write the company announcement...">
+                    </textarea>
+
+                    <span asp-validation-for="Content"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label class="checkbox-label">
+
+                        <input asp-for="IsImportant" />
+
+                        <span>
+                            Mark as important
+                        </span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="form-actions">
+
+                    <button type="submit"
+                            class="employee-add-button">
+                        Publish News
+                    </button>
+
+                    <a asp-action="Index"
+                       class="clear-button">
+                        Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
