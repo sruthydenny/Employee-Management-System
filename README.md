@@ -15,7 +15,7 @@ The application provides role-based access for administrators and employees, wit
 - Company news management
 - Company events management
 - Employee profile management
-- AI assistant powered by Ollama
+- AI assistant powered by Ollama ( model : `llama3.2:3b` )
 - SQL Server database integration
 - Responsive web interface
 - ASP.NET Core Identity authentication
@@ -52,17 +52,12 @@ Employees can:
 ## Technology Stack
 
 - C#
-- ASP.NET Core MVC
-- .NET 10
-- Entity Framework Core
-- ASP.NET Core Identity
+- .NET 10 and Entity Framework Core
+- ASP.NET Core MVC and ASP.NET Core Identity
 - SQL Server
-- HTML
-- CSS
+- HTML, CSS, JavaScript
 - Bootstrap
-- JavaScript
 - Ollama
-- Git
 
 ## Project Structure
 
